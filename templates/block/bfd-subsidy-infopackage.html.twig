@@ -1,0 +1,43 @@
+{% import '@vzbv_generic/macros/fields.twig' as field %}
+
+{% if data is not empty %}
+  <div class="component--accented component--subsidy-takeaway">
+  
+    {{ field.label(null, {label: 'Zum Mitnehmen'}) }}
+  
+    <div>
+      {% if data.pdf is defined %}
+
+        <div class="h5">Das Fördermittel als PDF</div>
+
+        {%
+          set title = data.pdf.label
+        %}
+        {%
+          set url   = data.pdf.url
+        %}
+
+        <ul class="fa-ul">
+          <li><span class="fa-li"><i class="fas fa-chevron-circle-right fa-sm"></i></span><a href="{{ url }}" alt="{{ title }}" title="{{ title }}">{{ title }}</a></li>
+        </ul>
+
+      {% endif %}
+
+      {% if data.checklists is defined %}
+
+        <div class="h5">Checklisten (PDFs, mit Ausfüllhilfen)</div>
+
+        <ul class="fa-ul">
+          {% for item in data.checklists %}
+            {%
+              set title = item.name ?? item.title
+            %}
+            <li><span class="fa-li"><i class="fas fa-chevron-circle-right fa-sm"></i></span><a href="{{ item.url }}" alt="{{ title }}" title="{{ title }}">{{ title }}</a></li>
+          {% endfor %}
+        </ul>
+      
+      {% endif %}
+    </div>    
+  </div>
+{% endif %}
+ 

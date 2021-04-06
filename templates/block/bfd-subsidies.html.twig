@@ -1,0 +1,80 @@
+<div class="row mb-4 subsidy-items-header">
+  <div class="col-lg-7">
+    {# <strong>Name</strong> #}
+  </div>
+  <div class="col-lg-5">
+    <strong>Fördersumme</strong>
+    <a tabindex="0" class="info-icon" role="button" 
+        aria-label="Kurzinfos zur Fördersumme und der Kombinierbarkeit von Fördermitteln"
+        data-toggle="popover" data-placement="left" data-trigger="manual" data-html="true" 
+        data-content="Die Kombination mit anderen öffentlichen Fördermitteln z. B. Krediten, Zulagen oder Zuschüssen ist grundsätzlich möglich. Dabei darf die Summe der öffentlichen Förderzusagen die förderfähigen Kosten nicht übersteigen.">
+      <span>
+        <span class="fa-stack fa-xs">
+          <i class="fas fa-circle fa-stack-2x"></i>
+          <i class="fa fa-info fa-inverse fa-stack-1x"></i>
+        </span>
+      </span>
+    </a>
+  </div>
+</div>
+
+{% for item in data %}
+
+  <section id="subsidy-{{ item.id }}" class="subsidy-item" 
+           aria-label="Zusammenfassende Informationen zum Fördermittel {{ item.title | e }}">
+      
+    {% if item.field_subsidy_unavailable %}
+      <div class="subsidy--unavailable"><i class="fa fa-exclamation-triangle pr-2" aria-hidden="true"></i>Fördermittel zur Zeit nicht verfügbar</div>
+    {% endif %}
+    
+    <div class="row mb-2">
+      <div class="col-lg-7">
+        <h3 class="title h4">
+          <a href="{{ item.url }}" 
+             title="{{ item.title | e }}"
+             aria-label="Link zum Fördermittel {{ item.title | e }}">{{ item.title | e | bfd_hyphenate | raw }}</a>
+        </h3>
+        {% if item.field_subsidy_scope is defined %}
+          <h4 class="subtitle">
+            {{ item.field_subsidy_scope | bfd_entity_decode }}
+          </h4>
+        {% endif %}
+      </div>
+      <div class="amount col-lg-5">
+        {% if item.field_subsidy_amount is defined %}
+          <strong>{{ item.field_subsidy_amount | bfd_number }} EUR</strong>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="row">
+      <ul class="col-lg-7">
+        {% if item.subsidy_type is defined %}
+          <li>
+            Förderart: {{ item.subsidy_type }}
+          </li>
+        {% endif %}
+
+        {% if item.field_subsidy_coverage is defined %}
+          <li>
+            Förderumfang: {{ item.field_subsidy_coverage }}
+          </li>
+        {% endif %}
+
+        {% if item.subsidy_provider is defined %}
+          <li>
+            Ansprechpartner: {{ item.subsidy_provider }}
+          </li>
+        {% endif %}
+      </ul>
+
+      <div class="col-lg-5 col-xs-12 cta mt-5">
+        <a href="{{ item.url }}" 
+           title="{{ item.title | e }}" 
+           aria-label="Mehr lesen zum Fördermittel: {{ item.title | e }}"
+           class="cta btn btn-primary">Förderprogramm im Detail</a>        
+      </div>
+    </div>
+
+  </section>
+{% endfor %}

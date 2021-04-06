@@ -1,0 +1,41 @@
+.toc-nav {
+
+    @extend .bg-teaser; 
+    
+    padding-top: $grid-gutter-width;
+    padding-bottom: $grid-gutter-width;
+
+    text-transform: uppercase;
+    font-size: $font-size-px16;
+
+    display: block;
+    columns: 3;
+
+    .nav, a {
+
+        display: block;
+    }
+
+    a {
+
+        display: inline-block;
+
+        color: $greyishBrown;
+        opacity: 0.9;
+
+        &.active, 
+        &:hover {
+
+            color: $sickGreen;
+        }
+
+        padding: ($nav-link-padding-y / 2) 0;
+    }
+
+    @include media-breakpoint-down(md) { 
+
+        columns: unset;
+    }
+}
+
+

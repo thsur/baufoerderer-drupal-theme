@@ -1,0 +1,52 @@
+{#
+/**
+ * Partial to render a node teaser. 
+ */
+#}
+
+{% import '@vzbv_generic/macros/terms.twig' as terms %}
+
+<section class="subsidy--profile">
+    <ul>
+        {% if node.field_subsidy_unavailable.value %}
+          <li class="subsidy--unavailable">
+            <i class="fa fa-exclamation-triangle pr-2" aria-hidden="true"></i>Fördermittel zur Zeit nicht verfügbar
+          </li>
+        {% endif %}
+        {% if node.field_subsidy_name is not empty %}
+          <li>
+            <strong>Name:</strong> {{ node.field_subsidy_name.value }}
+          </li>
+        {% endif %}
+
+        {% if content.field_subsidy_type is not empty %}
+          <li>
+            <strong>Förderart:</strong> {{ terms.as_list(node.field_subsidy_type) }}
+          </li>
+        {% endif %}
+
+        {% if node.field_subsidy_coverage is not empty %}
+          <li>
+            <strong>Förderumfang:</strong> {{ node.field_subsidy_coverage.value }}
+          </li>
+        {% endif %}
+
+        {% if node.field_subsidy_provider is not empty %}
+          <li>
+            <strong>Ansprechpartner:</strong> {{ terms.as_list(node.field_subsidy_provider) }}
+          </li>
+        {% endif %}
+
+        {% if node.field_subsidy_region is not empty %}
+          <li>
+            <strong>Geltungsbereich:</strong> {{ terms.as_list(node.field_subsidy_region) }}
+          </li>
+        {% endif %}
+
+        {% if node.field_date is not empty %}
+          <li>
+            <strong>Stand:</strong> {{ node.field_date | bfd_field_values | join | bfd_date('%e. %B %Y') }}
+          </li>
+        {% endif %}
+    </ul>
+</section>

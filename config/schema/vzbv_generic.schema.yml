@@ -1,0 +1,5 @@
+# Schema for the configuration files of the Bootstrap Barrio theme.
+
+vzbv_generic.settings:
+  type: theme_settings
+  label: 'Generic settings'

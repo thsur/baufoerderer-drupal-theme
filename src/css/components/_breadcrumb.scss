@@ -1,0 +1,54 @@
+.breadcrumb-nav {
+
+    display: none;
+
+    @include media-breakpoint-up(lg) { 
+
+        display: block;
+    }
+}
+
+.breadcrumb {
+
+    background-color: transparent;
+    border-radius: 0;
+
+    margin: 0;
+    padding-left: 0;
+
+    border-top: 1px solid lighten($battleshipGrey, 45%);
+    border-bottom: 1px solid lighten($battleshipGrey, 45%);
+
+    padding-top: map-get($spacers, 2);
+    padding-bottom: map-get($spacers, 2);
+
+    margin-top: map-get($spacers, 2);
+    margin-bottom: ($grid-gutter-width / 2);
+
+    font-size: $font-size-sm;
+
+    .breadcrumb-item {
+
+        color: $link-color;
+
+        &:not(:first-child)::before {
+
+            @include fa-icon();
+            content: fa-content($fa-var-chevron-right);
+            font-family: $font-family-fa-regular;
+            
+            color: $link-color;
+            padding-right: 0.2rem;
+        }
+
+        a:hover {
+
+            color: $sickGreen;
+        }
+
+        & > span {
+
+            color: $text-color;
+        }
+    }
+}

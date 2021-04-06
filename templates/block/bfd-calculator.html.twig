@@ -1,0 +1,16 @@
+{% if data is not empty %}
+<div class="component--calculator">
+  <div class="ribbon--wrapper">
+    <div class="ribbon--ribbon">
+      Gut zu wissen!
+      <div class="ribbon--after"></div>
+    </div>
+  </div>
+  <div>
+    <div class="title">Berechnen Sie</div>  
+    <div class="subtitle">...die Fixkosten Ihres Kauf- oder Bauvorhabens</div>  
+  </div>
+  <calculator data-type="buy"></calculator>    
+  <script type="application/json" id="calculator--data">{{ data | raw }}</script>
+</div>
+{% endif %}

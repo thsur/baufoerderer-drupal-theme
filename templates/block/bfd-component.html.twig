@@ -1,0 +1,11 @@
+{% import '@vzbv_generic/macros/fields.twig' as field %}
+
+<div class="component--base component--remark row no-gutters">
+    <div class="col-md-3 col-lg-2">
+        <i class="fas {{ data.icon }} fa-5x"></i>
+    </div>
+    <div class="col-sm-12 col-md-9 col-lg-10">
+        {{ field.label(null, {label: data.label}) }}
+        <div>{{ data.content }}</div>
+    </div>
+</div>

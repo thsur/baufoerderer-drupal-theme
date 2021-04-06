@@ -1,0 +1,89 @@
+
+.footer-main {
+
+    background-color: $gunmetal;
+    
+    @include media-breakpoint-down(lg) {
+
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+}
+
+.footer-nav {
+
+    @include media-breakpoint-down(sm) {
+
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+.footer-bottom {
+
+    color: $battleshipGrey;
+
+    padding-top: map-get($spacers, 4);
+    padding-bottom: map-get($spacers, 4);
+
+    font-size: $font-size-sm;
+
+    .logos {
+
+        img {
+
+            height: 70px;
+
+            &.vzbv {
+
+                height: 60px;
+                transform: translateY(3px);
+            }
+        }
+    }
+
+    .campaigning {
+        
+        img {
+
+            height: 80px;
+
+            &.vzeb {
+
+                transform: translateX(30px);
+            }
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+
+        .campainging--claim, .campaigning {
+
+            display: none;
+        }
+    }
+
+    @include media-breakpoint-down(sm) {
+
+        text-align: center;
+
+        .logos img {
+
+            height: 50px !important;
+        }
+    }
+
+    @include media-breakpoint-down(xs) {
+
+        .logos img {
+
+            height: 38px !important;
+        }
+
+        .copyright {
+
+            font-size: smaller;
+        }
+    }
+}

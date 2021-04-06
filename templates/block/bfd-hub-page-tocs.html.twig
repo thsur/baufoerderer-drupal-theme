@@ -1,0 +1,25 @@
+{% for item in data %}
+
+    <nav class="toc-nav mb-6 px-5">
+        {% include '@vzbv_generic/navigation/bfd-tocs-nav.html.twig' with {data: data, current: item} %}
+    </nav>
+    
+    <section id="{{ item.nav.fragment }}" class="teaser">
+        
+        <header class="px-7 mb-7">
+            <div class="row no-gutters">
+                <h2 class="title col-md-9 mb-3">{{ item.name | e | bfd_hyphenate | raw }}</h2>
+            </div>
+            {% if item.teaser is defined %}
+                <div class="row no-gutters">
+                    <div class="toc-teaser col-md-9">{{ item.teaser | bfd_strip_nbsp | raw }}</div>
+                </div>
+            {% endif %}
+        </header>
+
+        {% for node in item.nodes %}
+            {% include '@vzbv_generic/content/_teaser.html.twig' %}
+        {% endfor %}
+
+    </section>
+{% endfor %}

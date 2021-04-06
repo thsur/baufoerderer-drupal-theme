@@ -1,0 +1,16 @@
+{% for chunk in bfd_chunk(data, 3) %}
+    <ul class="nav">
+    {% for item in chunk %}
+      {% if item.nav.type == 'nav-item' %}
+        <li class="nav-item">
+          <a href="#{{ item.nav.fragment }}" 
+             class="nav-link {{ item.nav.tid == current.tid ? 'active' }}" 
+             data-id="{{ item.nav.fragment }}"
+             aria-label="Zum Abschnitt '{{ item.nav.name }}' weiter unten auf dieser Seite springen" >
+            {{ item.nav.name }} 
+          </a>
+        </li>
+      {% endif %}
+    {% endfor %}
+    </ul>
+{% endfor %}

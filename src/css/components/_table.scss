@@ -1,0 +1,4 @@
+.table-striped tbody tr.odd {
+
+    background-color: map-get($component-colors, 'table');
+}

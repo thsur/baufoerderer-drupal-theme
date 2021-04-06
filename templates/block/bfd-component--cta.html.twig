@@ -1,0 +1,20 @@
+{% import '@vzbv_generic/macros/fields.twig' as field %}
+{% if data is not empty %}
+<div class="component--base component--cta row no-gutters">
+    <div class="col-md-8 col-sm-12">
+        <span class="h4">{{ data.text }}</span>
+    </div>
+    <div class="col-md-4 col-sm-12">
+        {% if bfd_is_url_external(data.url) %}
+        <a href="{{ data.url }}" 
+           aria-label="{{ data.button.aria_label }}"
+           target="_blank"
+           class="cta btn btn-primary">{{ data.button.label }}</a>
+        {% else %}
+        <a href="{{ data.url }}" 
+           aria-label="{{ data.button.aria_label }}"
+           class="cta btn btn-primary">{{ data.button.label }}</a>
+        {% endif %}
+    </div>
+</div>
+{% endif %}

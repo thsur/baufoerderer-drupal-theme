@@ -1,0 +1,29 @@
+{% extends "field--link.html.twig" %}
+
+{%
+  set label = 'Downloads'
+%}
+
+{%
+  set items = _context.element['#items'] | bfd_media_info 
+%}
+
+{%
+  set field_type = 'downloads'
+%}
+
+{% block field_items_inner %}
+
+  <ul>
+    {% for item in items %}
+      <li>
+        <a href="{{ (item.fileinfo | first).url }}" title="{{ item.label }}" alt="{{ item.label }}">
+          {{ item.label }}
+        </a> 
+        ({{ item.mimetype | split('/') | last | upper }})
+      </li>
+    {% endfor %}
+  </ul>  
+
+{% endblock %}
+

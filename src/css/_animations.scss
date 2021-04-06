@@ -1,0 +1,20 @@
+.animated.faster {
+
+  animation-duration: 300ms !important;
+}
+
+.transition.fadeIn {
+    
+    animation: none;
+
+    opacity: 1 !important;
+    transition: opacity .25s ease-in-out;
+}
+
+.transition.fadeOut {
+    
+    animation: none;
+
+    opacity: 0 !important;
+    transition: opacity .25s ease-in-out;
+}

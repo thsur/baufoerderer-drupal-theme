@@ -1,0 +1,57 @@
+#
+# Basic theme info
+# 
+name: VZBV Generic
+type: theme
+description: 'Generic vzbv theme.'
+core: 8.x
+
+# 
+# Set a core theme as parent so we don't have to worry about missing templates.
+# 
+# Cf. core/themes/stable
+# 
+base theme: stable
+
+# 
+# Custom libraries as defined by our theme's *.libraries.yml
+# 
+# Cf. https://www.drupal.org/docs/8/theming/adding-stylesheets-css-and-javascript-js-to-a-drupal-8-theme
+# 
+libraries:
+- vzbv_generic/global-styling
+- vzbv_generic/global-scripts
+
+#
+# Unset system and module CSS & JS.
+# 
+# See:
+# 
+# - https://www.drupal.org/project/drupal/issues/2097531#comment-10652250
+# - https://jasoncote.co/remove-replace-css-javascript-from-drupal-8-module
+# 
+# For a module's CSS & JS, cf. its *.libraries.yml. For core CSS & JS, cf.:
+# 
+# - core/modules/system/system.libraries.yml
+# - core/core.libraries.yml
+# 
+libraries-override:
+  system/base: false
+  system/admin: false
+  system/maintenance: false
+  system/drupal.system: false
+  system/drupal.system.modules: false
+  system/diff: false
+  system/drupal.system.date: false
+  # core/drupal: false
+  # core/drupalSettings: false
+  # core/jquery: false
+
+#
+# Define some basic theme regions.
+# 
+regions:
+  header: Header
+  breadcrumb: Breadcrumb
+  content: Content
+  footer: Footer

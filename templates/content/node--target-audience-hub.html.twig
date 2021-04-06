@@ -1,0 +1,10 @@
+{% extends "node.html.twig" %}
+
+{% block related %}
+    {{ drupal_block('bfd_related', {type: 'article', label: 'Artikel zum Thema'}, wrapper = false) }}
+    {{ drupal_block('bfd_related', {type: 'guide',   label: 'Ratgeber zum Thema'}, wrapper = false) }}
+    {{ drupal_block('bfd_related', {type: 'subsidy', label: 'Die wichtigsten Fördermittel zum Thema'}, wrapper = false) }}
+{% endblock %}
+
+{% block date %}
+{% endblock %}

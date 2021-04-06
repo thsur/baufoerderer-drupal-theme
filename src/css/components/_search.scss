@@ -1,0 +1,57 @@
+
+.search-toggler {
+
+    @extend .navbar-toggler;
+}
+
+.form-control, .btn {
+
+    border-radius: 0;
+}
+
+.form-control {
+
+    display: inline-block;
+    width: auto;
+}
+
+.btn {
+
+    transform: translate(0, -1px);
+    background-color: $gunmetal;
+}
+
+.is-mobile {
+
+    .search {
+
+        height: 0;
+        padding: 0;
+
+        transition: all 0.2s ease-out;
+        transition-property: height, padding;
+
+        overflow: hidden;
+
+        form {
+
+            opacity: 0;
+            transition: opacity 0.1s ease-out;
+        }
+
+        &.active {
+
+            height: 70px;
+            padding: 1rem 0;
+
+            transition: all 0.2s ease-out;
+            transition-property: height, padding;
+            
+            form {
+
+                opacity: 1;
+                transition: opacity 0.1s ease-out;
+            }
+        }
+    }
+}

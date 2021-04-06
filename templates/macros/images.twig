@@ -1,0 +1,14 @@
+/**
+ * An image.
+ * 
+ * @param Array  - file info
+ * @param Array  - item info
+ * @param Object - optional settings as a JSON-like object
+ */
+#}
+{% macro image(file, item, settings = {}) %}
+    <img src="{{ file.url }}" 
+         alt="{{ item.alt == file.filename ? '' : item.alt }}"
+         title="{{ item.title == file.filename ? '' : item.title }}"
+         class="img-fluid"> 
+{% endmacro %}

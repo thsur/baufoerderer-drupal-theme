@@ -1,0 +1,36 @@
+<div class="h3">Was haben Sie vor?</div>
+
+{% include '@vzbv_generic/content/_target_audience_teasers.html.twig' %}
+
+<div class="row no-gutters teaser--block teaser--block--subsidies">
+    {% for item in subsidies %}
+
+      <div id="subsidy-{{ item.id }}" class="teaser--subsidy col">
+        {% if item.subsidy_type is defined %}
+          <span>
+            {{ item.subsidy_type }}
+          </span>
+        {% endif %}        
+        <h3 class="title h4">
+          <a href="{{ item.url }}" title="{{ item.title | e }}" aria-label="{{ item.title | e }}">
+            {{ item.title | e | bfd_hyphenate | raw }}
+          </a>
+        </h3>
+        {% if item.field_subsidy_scope is defined %}
+          <h4 class="subtitle">
+            {{ item.field_subsidy_scope | bfd_entity_decode }}
+          </h4>
+        {% endif %}
+      </div>
+    {% endfor %}
+</div>
+
+<div class="row no-gutters teaser--block teaser--block--articles">
+    {% for node in articles %}
+        <div class="teaser--article col">
+            {% include '@vzbv_generic/content/_teaser_inner.html.twig' with {'node': node, 'truncate_len': 20} %}
+        </div>
+    {% endfor %}
+</div>
+
+{{ drupal_block('bfd_news', {type: 'topnews'}, wrapper = false) }}

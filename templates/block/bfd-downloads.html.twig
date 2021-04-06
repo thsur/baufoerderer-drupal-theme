@@ -1,0 +1,72 @@
+{% import '@vzbv_generic/macros/fields.twig' as field %}
+
+{% macro download_item(media, source) %}
+  {%
+    set name = media.name.value
+  %}
+
+  {%
+    set url = file_url(source.uri.value)
+  %}
+  <a href="{{ url }}" alt="{{ name }}" title="{{ name }}">{{ name }}</a>
+{% endmacro %}
+
+{% macro download_list(list, data) %}
+
+  {% from _self import download_item %}
+  
+  <ul>
+    {% for id in list %}
+      <li>{{ download_item(data.items[id].item, data.items[id].source) }}</li>
+    {% endfor %}
+  </ul>
+{% endmacro %}
+
+{% if data is not empty%}
+  
+  {%
+    set types = {
+
+      checklists: data.by_tags[1275] ?? [],
+      bsb:        data.by_tags[1415] ?? [],
+      wie:        data.by_tags[1413] ?? []
+    }
+  %}
+
+  <div class="px-7">
+    {% if types.checklists is not empty %}
+      <div>
+        {{ field.label(null, {label: 'Interaktive Checklisten'}) }}
+        <p>
+          Ermitteln Sie individuell anhand unserer interaktiven Checklisten Ihren Finanzierungsbedarf für Ihr Bau- oder Kaufvorhaben. Finden Sie heraus, welche monatliche finanzielle Belastbarkeit Sie im Rahmen eines möglichen Kreditvertrages überhaupt tragen können. Schützen Sie sich so vor Risiken bei Ihrer ganz persönlichen Finanzierung!
+        </p>
+      </div>
+
+      {{ _self.download_list(types.checklists, data) }}
+    {% endif %}
+
+    {% if types.bsb is not empty %}
+      <div>
+        {{ field.label(null, {label: 'Kostenlose Ratgeber zu Hausbau, Immobilienerwerb und Modernisierung'}) }}
+        <p>
+          Der Bauherren-Schutzbund e.V. (BSB) ist eine gemeinnützige Verbraucherschutzorganisation und Mitglied im Verbraucherzentrale Bundesverband e.V. Der BSB stellt Verbrauchern kostenlos Ratgeber zu aktuellen Fragen rund um Hausbau, Immobilienerwerb und Modernisierung zur Verfügung. Hier finden Sie viele dieser Ratgeber, kostenlos zum Download. Informieren Sie sich jetzt!
+        </p>
+      </div>
+
+      {{ _self.download_list(types.bsb, data) }}
+    {% endif %}
+
+    {% if types.wie is not empty %}
+      <div>
+        {{ field.label(null, {label: 'Ratgeber für Eigentümer'}) }}
+        <p>
+          Die folgenden Ratgeber sind vom Verein Wohnen im Eigentum e.V. zusammengestellt. Der Verein ist ein Zusammenschluss der Erwerber und Eigentümer von Einfamilienhäusern und Wohnungen (Selbstnutzern wie Kleinanlegern) und ist Mitglied bei der Verbraucherzentrale NRW und der Bundesarbeitsgemeinschaft der Seniorenorganisationen (BAGSO).
+        </p>
+      </div>
+
+      {{ _self.download_list(types.wie, data) }}
+    {% endif %}
+  </div>
+
+{% endif %}
+

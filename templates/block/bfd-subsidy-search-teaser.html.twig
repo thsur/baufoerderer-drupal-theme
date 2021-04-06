@@ -1,0 +1,25 @@
+{% if data.type is defined %}
+  <div class="container">
+    {% if data.type == 'history_back' %}
+      <a href="#0" onclick="javascript:window.history.back()"><i class="fas fa-chevron-left"></i>Zurück zur Fördermittelsuche</a>
+    {% endif %}
+    {% if data.type == 'form' %}
+    <div class="subsidy--search-teaser">
+      <form action="{{ data.action }}" method="POST" class="row" role="form">
+          <div class="col-md-8">
+              <span class="font-weight-bold">Passende Fördermittel finden</span>
+              {% if data.preselect is defined %}
+                <span class="subsidy--category">&mdash; Rubrik: {{ data.preselect.value }}</span>
+              {% endif %}
+          </div>
+          <div class="col-md-4">
+            <input type="submit" value="Fördermittel finden" class="btn btn-primary"/>
+            {% if data.preselect is defined %}
+              <input type="hidden" id="terms_index" name="terms_index" value="{{ data.preselect.id }}"/>
+            {% endif %}
+          </div>
+      </form>
+    </div>
+    {% endif %}
+  </div>
+{% endif %}

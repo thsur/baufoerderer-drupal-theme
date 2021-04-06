@@ -1,0 +1,169 @@
+{#
+/**
+ * @file
+ * Bootstrap Barrio's theme implementation to display a node.
+ *
+ * Available variables:
+ * - node: The node entity with limited access to object properties and methods.
+     Only "getter" methods (method names starting with "get", "has", or "is")
+     and a few common methods such as "id" and "label" are available. Calling
+     other methods (such as node.delete) will result in an exception.
+ * - label: The title of the node.
+ * - content: All node items. Use {{ content }} to print them all,
+ *   or print a subset such as {{ content.field_example }}. Use
+ *   {{ content|without('field_example') }} to temporarily suppress the printing
+ *   of a given child element.
+ * - author_picture: The node author user entity, rendered using the "compact"
+ *   view mode.
+ * - metadata: Metadata for this node.
+ * - date: Themed creation date field.
+ * - author_name: Themed author name field.
+ * - url: Direct URL of the current node.
+ * - display_submitted: Whether submission information should be displayed.
+ * - attributes: HTML attributes for the containing element.
+ *   The attributes.class element may contain one or more of the following
+ *   classes:
+ *   - node: The current template type (also known as a "theming hook").
+ *   - node--type-[type]: The current node type. For example, if the node is an
+ *     "Article" it would result in "node--type-article". Note that the machine
+ *     name will often be in a short form of the human readable label.
+ *   - node--view-mode-[view_mode]: The View Mode of the node; for example, a
+ *     teaser would result in: "node--view-mode-teaser", and
+ *     full: "node--view-mode-full".
+ *   The following are controlled through the node publishing options.
+ *   - node--promoted: Appears on nodes promoted to the front page.
+ *   - node--sticky: Appears on nodes ordered above other non-sticky nodes in
+ *     teaser listings.
+ *   - node--unpublished: Appears on unpublished nodes visible only to site
+ *     admins.
+ * - title_attributes: Same as attributes, except applied to the main title
+ *   tag that appears in the template.
+ * - content_attributes: Same as attributes, except applied to the main
+ *   content tag that appears in the template.
+ * - author_attributes: Same as attributes, except applied to the author of
+ *   the node tag that appears in the template.
+ * - title_prefix: Additional output populated by modules, intended to be
+ *   displayed in front of the main title tag that appears in the template.
+ * - title_suffix: Additional output populated by modules, intended to be
+ *   displayed after the main title tag that appears in the template.
+ * - view_mode: View mode; for example, "teaser" or "full".
+ * - teaser: Flag for the teaser state. Will be true if view_mode is 'teaser'.
+ * - page: Flag for the full page state. Will be true if view_mode is 'full'.
+ * - readmore: Flag for more state. Will be true if the teaser content of the
+ *   node cannot hold the main body content.
+ * - logged_in: Flag for authenticated user status. Will be true when the
+ *   current user is a logged-in member.
+ * - is_admin: Flag for admin user status. Will be true when the current user
+ *   is an administrator.
+ *
+ * @see template_preprocess_node()
+ */
+#}
+
+{% import '@vzbv_generic/macros/fields.twig' as field %}
+
+<div class="crossheading">Das Wichtigste im Überblick</div>
+
+{% include '@vzbv_generic/content/_subsidy_profile.html.twig' %}
+
+{{ content.body }}
+
+{# Video, if any #}
+
+{{ content.field_main_content_paragraphs | bfd_only_paragraph_type('video') }}
+
+{# KfW Point of Contact #}
+
+{{ drupal_block('bfd_kfw_contact', wrapper = false) }}
+
+<div class="crossheading">Das Fördermittel im Detail</div>
+
+{# Fixed content #}
+
+{% if node.field_subsidy_audience_desc is not empty %}
+    {{ field.with_label(node.field_subsidy_audience_desc) }}
+{% endif %}
+
+{% if node.id == 1169 %}
+    {% include '@vzbv_generic/checklist/checklist.html.twig' %}
+{% endif %}
+
+{% if node.field_subsidy_terms is not empty %}
+    {{ field.with_label(node.field_subsidy_terms) }}
+{% endif %}
+
+{% if node.field_subsidy_desc is not empty %}
+    {{ field.with_label(node.field_subsidy_desc) }}
+{% endif %}
+
+{% if node.field_subsidy_consultancy is not empty %}
+    {{ field.with_label(node.field_subsidy_consultancy) }}
+{% endif %}
+
+<hr class="w-100"/>
+
+{# Main, flexible content #}
+
+{{ content.field_main_content_paragraphs | bfd_without_paragraph_type('video') }}
+
+{# KfW Point of Contact #}
+
+{{ drupal_block('bfd_kfw_contact', wrapper = false) }}
+
+{# Last advices #}
+
+{% if node.field_subsidy_advices is not empty %}
+    {%
+        set value = content.field_subsidy_advices | bfd_theme('value')
+    %}
+    {%
+        set label = field.label(node.field_subsidy_advices)
+    %}
+    {{ drupal_block('bfd_component', {label: label, content: value, icon: 'fa-exclamation'}, wrapper = false) }}
+{% endif %}
+
+{% if node.field_subsidy_application_advice is not empty %}
+    {%
+        set value = content.field_subsidy_application_advice | bfd_theme('value')
+    %}
+    {%
+        set label = field.label(node.field_subsidy_application_advice)
+    %}
+    {{ drupal_block('bfd_component', {label: label, content: value, icon: 'fa-exclamation'}, wrapper = false) }}
+{% endif %}
+
+{# Combinations #}
+
+{% if node.field_subsidy_combinations is not empty %}
+    {{ content.field_subsidy_combinations | bfd_theme('link') }}
+{% endif %}
+
+{# Downloads #}
+
+{# Auto-attached checklists #}
+{{ drupal_block('bfd_subsidy_infopackage', wrapper = false) }}
+
+{# Attached by editor #}
+{{ content.field_attachments }}
+
+<hr class="w-100"/>
+
+{# Internal links #}
+
+{{ content.field_internal_links }}
+
+{# Related content #}
+
+{{ drupal_block('bfd_related', {type: 'subsidy', label: 'Ähnliche Förderungen'}, wrapper = false) }}
+{{ drupal_block('bfd_related', {type: 'article', label: 'Artikel zum Thema'}, wrapper = false) }}
+{{ drupal_block('bfd_related', {type: 'guide', label: 'Passende Ratgeber'}, wrapper = false) }}
+
+{# External links #}
+
+{{ content.field_external_links }}
+
+<div class="trail--subsidy-teaser">
+    {{ drupal_block('bfd_subsidy_search_teaser', { type: 'history_back', fallback: 'form' }, wrapper = false) }}
+</div>
+
+

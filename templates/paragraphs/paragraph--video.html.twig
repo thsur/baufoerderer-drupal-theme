@@ -1,0 +1,21 @@
+{% extends 'paragraph.html.twig' %}
+{% import '@vzbv_generic/macros/fields.twig' as field %}
+
+{%
+  set info = paragraph.field_video | bfd_field_values | first
+%}
+{%
+  set video = info.field_media_video_embed_field | bfd_you_tube
+%}
+
+{% block content %}
+  {% if video %}
+    {{ field.headline(null, {label: info.name}) }}
+    <div class="embed-responsive embed-responsive-16by9">
+      <iframe src="{{ info.field_media_video_embed_field | bfd_you_tube }}" 
+              frameborder="0" 
+              allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen></iframe>
+    </div>
+  {% endif %}
+{% endblock %}

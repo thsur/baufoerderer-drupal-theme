@@ -1,0 +1,246 @@
+
+.footer-nav {
+
+    padding-top: map-get($spacers, 7);
+    padding-bottom: map-get($spacers, 9);
+
+    .h3 {
+
+        color: $white;
+        padding-left: map-get($spacers, 3);
+        text-transform: none;
+        font-size: $font-size-px18;
+    }
+
+    a {
+
+        color: $white;
+        line-height: $line-height-md;
+
+        font-size: $font-size-sm;
+    }
+
+    a:hover {
+
+        color: darken($white, 10%);
+        background-color: transparent;
+    }
+    
+    .goto-top {
+
+        display: none;
+    }
+    
+    .shariff {
+
+        width: 100%;
+
+        ul {
+
+            justify-content: space-around;
+            text-align: center;
+    
+            border-bottom: 1px solid $battleshipGrey;
+            padding-bottom: 0.8rem;
+
+            li {
+
+                float: none;
+                display: inline-block;
+
+                &.shariff-button {
+
+                    border: none;
+
+                    &.print {
+
+                        display: none;
+                    }
+
+                    a {
+
+                        background-color: transparent;
+                        color: $white;
+
+                        .fab, .fas {
+
+                            font-size: 1.3125rem !important; // 21px
+                        }
+
+                        &:hover {
+
+                            background-color: transparent;
+                            color: darken($white, 10%);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .subsidy-nav-title {
+
+        margin-top: 2.2rem;
+        padding-left: 0;
+    }
+
+    .subsidy-nav {
+
+        display: block;
+        
+        li {
+
+            display: block;
+        }
+
+        a {
+
+            padding-left: 0;
+        } 
+    }
+
+    .meta-nav {
+
+        justify-content: space-between;
+        text-align: center;
+        
+        li {
+
+            display: inline-block;
+
+            width: 100%;
+            text-align: left;
+        }
+
+        border-top: 1px solid $warmGrey;
+        
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+
+        padding-left: 0 !important;
+
+        .nav-link:first-of-type {
+
+            padding-right: 0;
+        }
+
+        .nav-link:last-of-type {
+
+            padding-left: 0;
+        }
+    }
+
+    @include media-breakpoint-up(md) {
+    
+        .shariff {
+
+            ul {
+
+                justify-content: center;
+                text-align: center;
+        
+                li {
+
+                    margin-right: 12%;
+                }
+            }
+        }
+    }
+
+    @include media-breakpoint-up(lg) {
+
+        padding-top: map-get($spacers, 8);
+
+        display: grid;
+        
+        grid-template-columns: 1fr 2fr 1fr;
+        grid-template-rows: 1fr;
+        
+        grid-template-areas:
+            'left center right';
+        
+        position: relative;
+        
+        .subsidy-nav-title {
+
+            margin-top: 0;
+        }
+
+        .subsidy-nav {
+
+            grid-area: left;
+        }
+
+        .shariff {
+
+            grid-area: center; 
+
+            ul {
+
+                justify-content: space-around;
+
+                width: 20rem;
+                margin: 0 auto;
+                padding-bottom: 1.5rem;
+                
+                li {
+
+                    margin-right: 8%;
+        
+                    &.shariff-button {
+
+                        &.print {
+
+                            display: inline-block;
+                        }
+                    }
+                }
+            }
+
+        }
+
+        .meta-nav {
+
+            grid-area: center;
+            position: absolute;
+            top: 65px;
+            left: 0;
+            right: 0;
+
+            border: none;
+            padding-top: 0;
+
+            justify-content:  center;
+
+            li {
+
+                width: auto;
+            }
+
+            .nav-link:first-of-type {
+
+                padding-right: $nav-link-padding-x;
+            }
+
+            .nav-link:last-of-type {
+
+                padding-left: $nav-link-padding-x;
+            }
+        }
+
+        .goto-top {
+
+            display: block;
+            grid-area: right;
+
+            text-align: right;
+            padding-right: map-get($spacers, 4);
+
+            .fas {
+
+                padding-left: map-get($spacers, 3);
+            } 
+        }
+    
+    }
+}

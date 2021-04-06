@@ -1,0 +1,180 @@
+{#
+/**
+ * @file
+ * Theme implementation to display a single page.
+ *
+ * The doctype, html, head and body tags are not in this template. Instead they
+ * can be found in the html.html.twig template normally located in the
+ * core/modules/system directory.
+ *
+ * Available variables:
+ *
+ * General utility variables:
+ * - base_path: The base URL path of the Drupal installation. Will usually be
+ *   "/" unless you have installed Drupal in a sub-directory.
+ * - is_front: A flag indicating if the current page is the front page.
+ * - logged_in: A flag indicating if the user is registered and signed in.
+ * - is_admin: A flag indicating if the user has permission to access
+ *   administration pages.
+ *
+ * Site identity:
+ * - front_page: The URL of the front page. Use this instead of base_path when
+ *   linking to the front page. This includes the language domain or prefix.
+ * - logo: The url of the logo image, as defined in theme settings.
+ * - site_name: The name of the site. This is empty when displaying the site
+ *   name has been disabled in the theme settings.
+ * - site_slogan: The slogan of the site. This is empty when displaying the site
+ *   slogan has been disabled in theme settings.
+
+ * Page content (in order of occurrence in the default page.html.twig):
+ * - node: Fully loaded node, if there is an automatically-loaded node
+ *   associated with the page and the node ID is the second argument in the
+ *   page's path (e.g. node/12345 and node/12345/revisions, but not
+ *   comment/reply/12345).
+ *
+ * @see template_preprocess_page()
+ * @see vzbv_generic_preprocess_page()
+ * @see html.html.twig
+ */
+#}
+
+<a id="top"></a>
+
+<div class="header-wrapper">
+  <div class="header container">
+    <div class="row">
+      <header id="header" role="banner" aria-label="Seitenkopf mit Logos">
+        {% include '@vzbv_generic/layout/bfd-header.html.twig' %}
+      </header>
+
+      <div class="togglers">
+
+        {% spaceless %}
+          <button class="search-toggler" 
+                  type="button" 
+                  data-target="#searchForm" 
+                  aria-expanded="false" aria-label="Suche ein- oder ausblenden">
+            <i class="fas fa-search"></i>
+          </button>
+
+          <button class="navbar-toggler" 
+                  type="button" 
+                  data-toggle="collapse" data-target="#navbarMain" 
+                  aria-controls="navbarMain" aria-expanded="false" aria-label="Navigation ein- oder ausblenden">
+            <i class="fas fa-bars"></i>
+          </button>
+        {% endspaceless %}
+      </div>
+
+      <div class="search">
+        {{ drupal_block('bfd_search_form', wrapper = false) }}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="navbar-main-wrapper">
+  <nav class="navbar navbar-main navbar-expand-lg" role="navigation" aria-label="Hauptnavigation">
+    <div>
+      <div class="collapse navbar-collapse" id="navbarMain">
+        {{ drupal_block('bfd_main_menu', wrapper = false) }}
+      </div>
+    </div>
+  </nav>
+</div>
+
+<div id="scroller-to-top">
+  <a href="#top"><i class="fas fa-chevron-up"></i></a>
+</div>
+
+{{ drupal_block('bfd_breadcrumbs', wrapper = false) }}
+
+{% block hero_space %}
+{% endblock %}
+
+{% block lead %}
+{% endblock %}
+
+<main id="main" role="main" class="container">
+
+  {% block page_title %}
+    
+    {% if title %}
+      <div class="page-title mb-5">
+        <h1{{ title_attributes.addClass(['title']) }}>{{ title }}</h1>
+        {% if subtitle %}
+          <h2 class="subtitle h3">{{ subtitle }}</h2>
+        {% endif %}
+      </div>
+    {% endif %}
+  
+  {% endblock %}
+    
+  {% if bfd_is_authenticated_user() %}
+    <div class="admin--links">
+      {{ page.content.vzbv_generic_local_tasks }}
+    </div>
+  {% endif %}
+
+  {% block content %}
+  
+    <a id="content" tabindex="-1"></a>
+    {{ page.content | without('vzbv_generic_local_tasks') }}
+
+  {% endblock %}
+
+  {% block trail %}
+  {% endblock %}
+</main>
+
+{% block post_content %}
+{% endblock %}
+
+<footer>
+  <div class="footer-main container-fluid">
+    <div class="container">
+      <div class="footer-nav">
+        {{ drupal_block('shariff_block', wrapper = false) }}
+        {{ drupal_block('bfd_subsidy_menu', wrapper = false) }}
+        {{ drupal_block('bfd_meta_menu', wrapper = false) }}
+        <a href="#top" class="goto-top">nach oben<i class="fas fa-chevron-up"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom container">
+    <div class="row mb-3 campainging--claim">
+        <div class="col-lg-4 offset-lg-8">Der Bauförderer unterstützt:</div>
+    </div>
+    <div class="row align-items-start">
+      {% apply spaceless %}
+      <div class="col-11 col-lg-7 offset-sm-1 logos">
+        <a href="https://www.kfw.de" title="Kreditanstalt für Wiederaufbau (KfW)" aria-label="Link zur Kreditanstalt für Wiederaufbau (KfW)">
+          <img src="/{{ directory }}/images/kfw_logo.svg" title="Kreditanstalt für Wiederaufbau (KfW)" class="kfw" 
+               aria-label="Logo der Kreditanstalt für Wiederaufbau (KfW)">
+        </a>
+        <a href="https://www.vzbv.de" title="Verbraucherzentrale Bundesverband e.V." aria-label="Link zum Verbraucherzentrale Bundesverband e.V.">
+          <img src="/{{ directory }}/images/vzbv-logo.png" title="Verbraucherzentrale Bundesverband e.V." class="vzbv"
+               aria-label="Logos des Verbraucherzentrale Bundesverbands e.V.">
+        </a>
+      </div>
+      <div class="col-lg-4 campaigning">
+        <a href="https://www.deutschland-machts-effizient.de" title="Deutschland macht's effizient" 
+           aria-label="Link zur Kampagne 'Deutschland macht's effizient' des Bundeswirtschaftsministeriums">
+          <img src="/{{ directory }}/images/deutschland-machts-effizient.png" title="Deutschland macht's effizient" class="bmwi"
+               aria-label="Logo der Kampagne 'Deutschland macht's effizient'">
+        </a>
+        <a href="https://verbraucherzentrale-energieberatung.de" title="Verbraucherzentrale Energieberatung" 
+           aria-label="Link zur Energieberatung der Verbraucherzentrale">
+          <img src="/{{ directory }}/images/vz-energieberatung.gif" title="Verbraucherzentrale Energieberatung" class="vzeb"
+               aria-label="Logo der Verbraucherzentrale Energieberatung">
+        </a>
+      </div>
+      {% endapply %}
+    </div>
+    <div class="row mt-5">
+      <div class="copyright col-11 offset-sm-1">
+        &copy; {{ "now"|date("Y") }} Verbraucherzentrale Bundesverband e.V.
+      </div>
+    </div>
+  </div>
+</footer>

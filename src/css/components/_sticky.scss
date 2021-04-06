@@ -1,0 +1,41 @@
+
+/**
+ * Cf.:
+ * https://github.com/dollarshaveclub/stickybits
+ */
+
+.sticky {
+  
+    position: sticky;
+    top: 0;
+
+    z-index: 1;
+    
+    &:before,
+    &:after {
+
+        content: '';
+        display: table;
+    }
+} 
+
+.is-desktop {
+
+    .navbar-main-wrapper.sticky {
+ 
+        background-color: $white;
+    }
+}
+
+.is-mobile {
+
+    .header-wrapper.sticky {
+ 
+        background-color: $white;
+    }
+
+    .navbar-main-wrapper.sticky {
+ 
+        z-index: 2;
+    }
+}

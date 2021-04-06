@@ -1,0 +1,18 @@
+<facets-checkbox>
+
+  <form action="javascript:void(0);" class="facet" role="form" aria-label="{ props.aria }">
+    <div each={ item in props.items } class="checkbox  { item.disabled ? 'disabled' : null  }">
+      <label for="checkbox-id-{ item.id }">
+        <input type="checkbox" 
+               data-type="{ props.type }" 
+               id="checkbox-id-{ item.id }" 
+               disabled="{ item.disabled }"
+               checked="{ item.selected }" 
+               onchange="{ changeState }" 
+               value="{ item.id }">
+        <span>{ item.value }</span>
+      </label>
+    </div>
+  </form>
+
+</facets-checkbox>

@@ -1,0 +1,249 @@
+
+<calculator-ui>
+  
+  <form action="javascript:void(0);" role="form" 
+        aria-label="Kalkulieren Sie einige der Fixkosten für Ihr Bau- oder Kaufvorhaben wie zum Beispiel die Grunderwerbsteuer">
+
+    <fieldset class="calculator--input">
+
+      <div class="form-group">
+        <label for="real-estate-state">1. In welchem Bundesland liegt Ihr Grundstück oder Ihre Immobilie?</label>
+        <select class="form-control" 
+                id="real-estate-state"
+                onchange="{ updateState }">
+          <option value="">- Bitte wählen Sie ein Bundesland -</option>
+          <option each={ item in props.states } value="{ item.index }" selected="{ item.index == state.model.getState() }">
+            { item.name }
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group" if={ state.model.getState() }>
+        <label for="real-estate-price">2. Wie hoch ist der Kaufpreis?</label>
+        <div>
+          <input type="text" 
+                 class="form-control px-2"
+                 value="{ state.model.getPrice() }" 
+                 id="real-estate-price" 
+                 onchange="{ updateState }"
+                 placeholder="Bitte geben Sie den Preis für Ihr Grundstück oder Ihre Immobilie ein">
+          <button onclick="{ updateState }" type="submit" class="btn btn-primary">Berechnen</button>
+        </div>
+      </div>
+
+    </fieldset>
+
+    <fieldset disabled class="calculator--results" if={ state.model.hasTotal() }>
+
+      <template each={ item in Object.values(state.model.getTotalItems()) }>
+        <div class="form-group">
+          <span>
+            <i class="fas fa-plus"></i>
+          </span>
+          <label for="{ item.id }">{ item.title }</label>
+          <input type="text" class="form-control px-2" id="{ item.id }" value="{ item.result }">
+        </div>
+      </template>
+      
+      <div class="form-group">
+        <span>
+          <i class="fas fa-equals"></i>
+        </span>
+        <label for="real-estate-total">Gesamtkosten</label>
+        <input type="text" class="form-control px-2" id="real-estate-total" 
+               value="{ state.model.getTotalResult() }">
+      </div>
+        
+    </fieldset>
+
+  </form>
+
+  <script>
+
+    import { install } from 'riot';
+    import currency    from 'currency.js';
+
+    /**
+     * Currency helper.
+     *
+     * Cf.:
+     * https://github.com/scurker/currency.js
+     */
+    const EUR = value => currency(
+
+      value, 
+      { 
+        separator: '.', 
+        decimal: ',', 
+        symbol: '€', 
+        precision: 2, 
+        formatWithSymbol: true, 
+        pattern: '# !'
+      }
+    );
+    
+    /**
+     * Model
+     */
+    const Calc = function (data) {
+
+      this.data = data;
+    };
+
+    Calc.prototype.setState = function (value) {
+
+      this.state = value;
+    };
+
+    Calc.prototype.getState = function () {
+
+      return this.state || null;
+    };
+
+    Calc.prototype.setPrice = function (value) {
+
+      this.price = EUR(value);
+    };
+
+    Calc.prototype.getPrice = function () {
+
+      return this.price ? this.price.format(true) : null;
+    };
+
+    Calc.prototype.getPercentageOf = function (value, percentage) {
+
+      return value * (percentage / 100);
+    }
+
+    /**
+     * Calculate all dynamic & fixed values, plus their total value.
+     *  
+     * @return void
+     */
+    Calc.prototype.calc = function () {
+
+      if (!(this.price && this.state)) {
+
+        this.total = null;
+        return;
+      }
+
+      // Get hold of dynamic data values of the selected state
+
+      const state = this.data.states[this.state];  
+      const price = this.price;
+
+      // Make sure to not accidentally change our internal state 
+
+      const data  = _.extend(state.data, this.data.fixed);
+
+      // Prepare result set
+
+      const total = {
+
+        items: {},
+        result: EUR(this.price.value)
+      };
+
+      // Loop data
+
+      for (const [k,v] of Object.entries(data).reverse()) {
+
+        // Calculate each items cost
+
+        const result = EUR(this.getPercentageOf(price.value , v.value));
+
+        // Add it to the total cost
+
+        total.result = total.result.add(result);
+
+        // Store each items cost as formatted currency string
+
+        total.items[v.id]  = _.extend({}, v, {
+        
+           result: result.format(true)
+        });
+      }
+
+      total.result = total.result.format(true);
+      this.total   = total;
+    };
+
+    Calc.prototype.hasTotal = function () {
+
+      return this.total && this.total !== null;
+    };
+
+    Calc.prototype.getTotalItems = function () {
+
+      if (!this.hasTotal()) {
+
+        return {};
+      }
+
+      return this.total.items;
+    };
+
+    Calc.prototype.getTotalResult = function () {
+
+      if (!this.hasTotal()) {
+
+        return null;
+      }
+
+      return this.total.result;
+    };
+
+
+    let model, root;
+
+    /**
+     * Riot lifecycle events.
+     *
+     * Cf. https://riot.js.org/api/#lifecycle
+     */
+    export default {
+
+      /**
+       * Trigger calculation when a state was selected or a price entered.
+       */
+      updateState(evt) {
+
+        const type  = evt.target.getAttribute('id');
+        const value = evt.target.value || null;
+
+        if (type == 'real-estate-state') {
+
+          model.setState(value);
+        }
+
+        if (type == 'real-estate-price') {
+
+          model.setPrice(value);
+        }
+
+        model.calc();
+        root.update();
+      },
+
+      /**
+       * Set state & init model before mounting.
+       */
+      onBeforeMount(props, state) {
+        
+        root = this; // Make us a reference to our component so we can update() it later on
+        state.model = model = new Calc(props);
+      },
+
+      onMounted(props, state) {
+        
+        // model.setState(1);
+        // model.setPrice(100000);
+        // model.calc();
+        // root.update();
+      },
+    };
+
+  </script>
+
+</calculator-ui>

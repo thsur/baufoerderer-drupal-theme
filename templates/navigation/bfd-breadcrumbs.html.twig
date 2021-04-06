@@ -1,0 +1,23 @@
+
+{# Cf. https://developers.google.com/search/docs/data-types/breadcrumb #}
+
+{% if data %}
+<nav role="navigation" class="container breadcrumb-nav" aria-labelledby="breadcrumb">
+  <div id="breadcrumb" class="visually-hidden">Breadcrumb</div>
+  <ol class="breadcrumb" vocab="https://schema.org/" typeof="BreadcrumbList">
+    {% for item in data %}  
+    <li class="breadcrumb-item" property="itemListElement" typeof="ListItem">
+      {% if item.url is defined %}
+       <a href="{{ item.url }}" property="item" typeof="WebPage" aria-label="{{ item.name }}">
+        <span property="name">{{ item.name }}</span>
+       </a>
+      {% else %}
+       <span property="name" aria-label="{{ item.name }}">{{ item.name }}</span>
+      {% endif %}
+       <meta property="position" content="{{ loop.index }}">
+    </li>
+    {% endfor %}
+  </ol>
+</nav>
+{% endif %}
+

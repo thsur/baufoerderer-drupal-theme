@@ -1,0 +1,10 @@
+{% extends "node.html.twig" %}
+
+{% block content %}
+  {{ parent() }}
+  
+  {# Calculator #}
+  {{ drupal_block('bfd_calculator', wrapper = false) }}
+{% endblock %}
+
+

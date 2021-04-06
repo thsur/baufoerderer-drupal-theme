@@ -1,0 +1,11 @@
+{% extends "node.html.twig" %}
+
+{% block content %}
+    {{ content | without('field_subtitle', 'field_date')}}
+{% endblock %}
+
+{% block related %}
+{% endblock %}
+
+{% block date %}
+{% endblock %}

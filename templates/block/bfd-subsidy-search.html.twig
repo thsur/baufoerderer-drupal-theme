@@ -1,0 +1,24 @@
+{% if data is not empty %}
+<div class="subsidy--search">
+  {% if bfd_is_front() %}
+  <div class="claim">
+    <h2 class="claim--title">Passende Fördermittel finden</h2>
+    <div class="claim--subtitle pb-4">Mit unserer Fördermittelsuche finden Sie die passenden Fördermittel mit wenigen Klicks.</div>
+  </div>
+  {% else %}
+  <div class="claim">Was haben Sie vor?</div>
+  {% endif %}
+</div>
+<div class="subsidy--search">
+  <subsidy-facets></subsidy-facets>    
+</div>
+<script type="application/json" id="facets-data">{{ data | raw }}</script>
+<script type="application/json" id="facets-help">
+{
+  "purpose": "Je nach Vorhaben können Sie zwischen Sanierung, Neubau und Kauf wählen. Falls Sie ihr Vorhaben noch nicht konkret geplant haben, wählen Sie bitte – Alle – .",
+  "region": "Wählen Sie ihr passendes Fördermittel nach regionalem Geltungsbereich (bestimmtes Bundesland, bundesweit) aus.",
+  "type": "<i>Kredit</i><p>Lassen Sie sich ausschließlich öffentliche Förderkredite für Ihr Vorhaben anzeigen.</p><i>Zuschuss</i><p>Für bestimmte Maßnahmen (z.B. Sachverständigen) erhalten Sie eine Förderung, die nicht zurückgezahlt werden muss.</p><i>Prämie</i><p>Wenn Sie bereits öffentliche Fördermittel erhalten, können Sie unter bestimmten Voraussetzungen zusätzlich eine pauschale Prämie erhalten.</p>",
+  "categories": "Wählen Sie ein öffentliches Förderprogramm nach der Art Ihres geplanten Vorhabens aus."
+}
+</script>
+{% endif %}

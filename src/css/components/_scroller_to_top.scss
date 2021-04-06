@@ -1,0 +1,39 @@
+
+#scroller-to-top {
+
+    position: fixed;
+    top: 50vh;
+
+    opacity: 0;
+
+    display: flex;
+    z-index: 1;
+    
+    background-color: map-get($component-colors, 'scroller-to-top');
+
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+
+    box-shadow: -1px 2px 5px 0px rgba(0, 0, 0, 0.2);
+    border-collapse: collapse;
+
+    transform: translateX(-(40 + ($grid-gutter-width / 2)));
+
+    a {
+        display: inline-block;
+        margin: auto;
+    } 
+}
+
+@include media-breakpoint-up(xl) {
+
+    #scroller-to-top {
+
+        height: 60px;
+        width: 60px;
+        border-radius: 30px;
+
+        transform: translateX($grid-gutter-width / 2);
+    }    
+}

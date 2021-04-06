@@ -1,0 +1,7 @@
+{% extends 'paragraph.html.twig' %}
+{% import '@vzbv_generic/macros/fields.twig' as field %}
+
+{% block content %}
+  {{ field.headline(paragraph.field_headline, {label: paragraph.field_headline.value}) }}
+  {{ field.items(paragraph.field_text) }}
+{% endblock %}

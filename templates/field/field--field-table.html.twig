@@ -1,0 +1,7 @@
+{% block field_items %}
+  {% for item in items %}
+    {% if item.content.tablefield %}
+        {{ item.content.tablefield | without('#prefix', '#suffix') }}
+    {% endif %}
+  {% endfor %}
+{% endblock %}

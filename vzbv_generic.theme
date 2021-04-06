@@ -1,0 +1,532 @@
+<?php
+
+/**
+ * For the most basic template hooks, cf. core/includes/theme.inc.
+ *
+ * On preprocess function, see:
+ * - http://2018.drupalcorn.org/sites/default/files/Preprocess%20All%20The%20Things_0.pdf
+ *
+ * On removing blocks, see:
+ * - https://www.unleashed-technologies.com/blog/2018/01/10/removing-default-drupal-page-title-correct-way
+ */
+
+use Drupal\Core\Template\Attribute;
+use Drupal\Core\Link;
+use Drupal\Component\Utility\Html;
+use Drupal\Core\Form\FormStateInterface;
+
+use Symfony\Component\Asset\Package;
+use Symfony\Component\Asset\VersionStrategy\JsonManifestVersionStrategy;
+
+/**
+ * Implements hook_page_attachments_alter().
+ */
+function vzbv_generic_page_attachments_alter(&$page) {
+  
+  $viewport = array(
+
+    '#type'       => 'html_tag',
+    '#tag'        => 'meta',
+    '#attributes' => array(
+
+      'name'    => 'viewport',
+      'content' => 'width=device-width, initial-scale=1, shrink-to-fit=no',
+    ),
+  );
+  
+  $http_equiv = array(
+
+    '#type'       => 'html_tag',
+    '#tag'        => 'meta',
+    '#attributes' => array(
+
+      'http-equiv'  => 'x-ua-compatible',
+      'content'     => 'ie=edge',
+    ),
+  );
+
+  $page['#attached']['html_head'][] = [$viewport, 'viewport'];
+  $page['#attached']['html_head'][] = [$http_equiv, 'http-equiv'];
+}
+
+/**
+ *
+ * Preprocess hooks
+ * 
+ */
+
+/**
+ * Implements hook_preprocess()
+ * @param  array
+ */
+function vzbv_generic_preprocess(&$variables) {
+
+  $variables['theme_path'] = base_path().Drupal::theme()->getActiveTheme()->getPath();
+}
+
+/**
+ * Implements hook_preprocess_time().
+ * 
+ * @param  array
+ */
+function vzbv_generic_preprocess_time(&$variables) {
+
+  if (isset($variables['attributes']) && isset($variables['attributes']['datetime'])) {
+
+    $utils = Drupal::service('bfd.utilities');
+    $node  = $utils->getCurrentNode();
+
+    $date  = new \DateTime($variables['attributes']['datetime']);
+
+    $variables['datetime']  = $date->getTimestamp();
+    $variables['node_type'] = $node->getType();
+  }
+}
+
+/**
+ * Implements hook_preprocess_hook() for HTML document templates.
+ *
+ * Adds body classes if certain regions have content.
+ */
+function vzbv_generic_preprocess_html(&$variables) {
+
+  $utils    = Drupal::service('bfd.utilities');
+  $node     = $utils->getCurrentNode();
+
+  if ($node) {
+  
+    if (Drupal::service('path.matcher')->isFrontPage()) {
+
+      $variables['attributes']['class'][] = 'front-page';
+    }
+    else {
+      
+      $variables['attributes']['class'][] = 'page-node-'.$node->id();
+    }
+  }
+
+  // Get page titles right in case a HTTP error occured.
+  // 
+  // Cf.:
+  // - https://www.axelerant.com/resources/team-blog/customizing-http-error-pages-in-drupal-8
+  // - https://stackoverflow.com/questions/39139541/custom-404-template-file-in-drupal-8
+
+  $route_name = Drupal::routeMatch()->getRouteName();
+
+  switch ($route_name) {
+  
+    case 'system.401':
+    case 'system.403':
+    case 'system.404':
+      $variables['head_title'] = ['Das tut uns leid...', 'baufoerderer.de'];
+      break;
+  }
+
+  // Prepare preloading of content.
+  //
+  // Cf.:
+  // - https://developer.mozilla.org/en-US/docs/Web/HTML/Preloading_content
+  // - https://symfony.com/doc/current/components/asset.html
+  // - https://symfony.com/doc/current/web_link.html
+  
+  $package = new Package(new JsonManifestVersionStrategy(__DIR__.'/build/manifest.json'));
+  $variables['preload']['fonts'] = [
+
+    ['type' => 'woff2', 'url' => $package->getUrl('themes/custom/vzbv_generic/build/fonts/merriweather-sans-v10-latin-regular.woff2')],
+    ['type' => 'woff2', 'url' => $package->getUrl('themes/custom/vzbv_generic/build/fonts/merriweather-sans-v10-latin-700.woff2')],
+    ['type' => 'woff2', 'url' => $package->getUrl('themes/custom/vzbv_generic/build/fonts/fa-solid-900.woff2')],
+    ['type' => 'woff2', 'url' => $package->getUrl('themes/custom/vzbv_generic/build/fonts/fa-brands-400.woff2')],
+  ];
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function vzbv_generic_preprocess_page(&$variables) {
+
+  $utils = Drupal::service('bfd.utilities');
+  
+  // When on login page, hide page title
+
+  if ($utils->getCurrentPath() == '/user/login') {
+
+    unset($variables['title']);
+    return;
+  }
+
+  // Otherwise, set page title & subtitle
+
+  $node = isset($variables['node']) ? $variables['node'] : null;
+
+  if (!$node) {
+
+    return;
+  }
+
+  if ($node->hasField('field_seo_title') && !$node->field_seo_title->isEmpty()) {
+
+    $variables['title'] = $node->field_seo_title->first()->view();
+  }
+  else {
+
+    $variables['title'] = $node->label();
+  }
+
+  $field_subtitle = $node->bundle() == 'subsidy' ? 'field_subsidy_scope' : 'field_subtitle';
+
+  if ($node->hasField($field_subtitle) && !$node->{$field_subtitle}->isEmpty()) {
+
+    $variables['subtitle'] = $node->{$field_subtitle}->first()->view();
+  }
+}
+
+/**
+ * Implements hook_preprocess_hook() for HTML field templates.
+ */
+function vzbv_generic_preprocess_field(&$variables) {
+
+  $type = $variables['field_type'];
+
+  // dump($variables);
+}
+
+/**
+ * Implements hook_preprocess_hook() for paragraphs.
+ */
+function vzbv_generic_preprocess_paragraph(&$variables) {
+
+  $paragraph = $variables['paragraph'];
+
+  // Hide infographics (i.e., do not render them).
+
+  if ($paragraph->getType() == 'infographic') {
+
+    foreach (['content', 'elements', 'paragraph'] as $unset) {
+
+      unset($variables[$unset]);
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_hook() for our front page. For this to work,
+ * hook_theme_suggestions_hook_alter() needs to be implemented, too.
+ *
+ * Cf.:
+ * - https://sqndr.github.io/d8-theming-guide/theme-hooks-and-theme-hook-suggestions/theme-hook-suggestions.html
+ */
+function vzbv_generic_preprocess_node__front_page(&$variables) {
+
+  $subsidies = Drupal::service('bfd.subsidy');
+  $utils     = Drupal::service('bfd.utilities');
+
+  // Get asorted subsidy profiles to be displayed as front page teasers
+
+  $profiles = $subsidies->getSubsidyProfilesByNodeIds([833, 816, 829]);
+
+  usort($profiles, function ($a, $b) {
+
+    return ($a['id'] == 829) ? 1 : -1;
+  });
+
+  // Get other asorted nodes to be displayed as front page teasers
+  
+  $nodes = $utils->getPublished($utils->loadNodes([1224, 435, 1247]));
+
+  $variables['subsidies'] = $profiles;
+  $variables['articles']  = $nodes;
+}
+
+/**
+ * Implements hook_preprocess_hook() for maintenance-page.html.twig.
+ */
+function vzbv_generic_preprocess_maintenance_page(&$variables) {
+
+  // By default, site_name is set to Drupal if no db connection is available
+  // or during site installation. Setting site_name to an empty string makes
+  // the site and update pages look cleaner.
+  // @see template_preprocess_maintenance_page
+  if (!$variables['db_is_active']) {
+
+    $variables['site_name'] = 'baufoerderer.de';
+  }
+
+  // Bootstrap Barrio has custom styling for the maintenance page.
+  $variables['#attached']['library'][] = 'vzbv_generic/maintenance_page';
+}
+
+/**
+ *
+ * Theme suggestions hooks
+ * 
+ */
+
+/**
+ * Implements hook_theme_suggestions_hook_alter() for page templates.
+ */
+function vzbv_generic_theme_suggestions_page_alter(array &$suggestions, array $variables) {
+
+  // Front page template
+
+  if (Drupal::service('path.matcher')->isFrontPage()) {
+
+    $suggestions[] = 'page__front_page';
+    return;
+  }
+
+  // HTTP error templates
+  // 
+  // Cf.:
+  // - https://www.axelerant.com/resources/team-blog/customizing-http-error-pages-in-drupal-8
+  // - https://stackoverflow.com/questions/39139541/custom-404-template-file-in-drupal-8
+
+  $route_name = Drupal::routeMatch()->getRouteName();
+
+  switch ($route_name) {
+  
+    case 'system.401':
+    case 'system.403':
+      $error = 401;
+      break;
+
+    case 'system.404':
+      $error = 404;
+      break;
+  }
+  
+  if (isset($error)) {
+    
+    array_splice($suggestions, 0, count($suggestions), ['page__' . $error]);
+    return;
+  }
+
+  // Bundle-based templates
+  
+  $node = Drupal::routeMatch()->getParameter('node');
+  
+  if ($node) {
+
+    $suggestions[] = 'page__' . $node->bundle();
+  }
+
+
+}
+
+/**
+ * Implements hook_theme_suggestions_hook_alter() for node templates.
+ */
+function vzbv_generic_theme_suggestions_node_alter(array &$suggestions, array $variables, string $hook) {
+  
+  $node = Drupal::routeMatch()->getParameter('node');
+
+  if (!$node) {
+
+    return;
+  }
+
+  $id     = $node->id();
+  $bundle = $node->bundle();
+
+  // Shorten suggestions, or: 
+  // Establish suggestion rules, e.g. mainly going by content type & terms. 
+
+  array_splice(
+
+    $suggestions, 0, count($suggestions), array_filter(
+
+      array_map(function ($suggestion) use ($id, $bundle, $hook) {
+
+        if (strrpos($suggestion, '__full')) { // No view mode-based templates
+
+          return false;
+        }
+
+        if (strrpos($suggestion, '__'.$id)) { // No templates based on node id
+
+          return false;
+        }
+
+        if (strrpos($suggestion, $hook.'__'.$bundle)) { // Instead, allow bundle-based ones
+
+          return $suggestion;
+        }
+
+        return $suggestion;
+
+      }, $suggestions)
+  ));
+
+  // Add suggestions
+
+  if (Drupal::service('path.matcher')->isFrontPage()) {
+
+    $suggestions[] = $hook.'__front_page';
+    return;    
+  }
+
+  $tocs = Drupal::service('bfd.toc');
+
+  if ($id == $tocs::SUBSIDY_SEARCH_NID) {
+
+    $suggestions[] = $hook.'__subsidy_search';
+    return;
+  }
+
+  if ($bundle == 'sub_section_hub') {
+
+    $toc = $tocs->getNodeToc($node);
+
+    if ($toc) {
+
+      $suggestions[] = $hook.'__'.$bundle.'__term_toc_'.$toc->tid;
+      return;
+    }
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_hook_alter() for field templates.
+ */
+function vzbv_generic_theme_suggestions_field_alter(array &$suggestions, array $variables, string $hook) {
+
+  // Add suggestions set directly on the element's render array to the suggestions array.
+  // 
+  // Suggestion might have been set by a Twig extension (cf. Drupal\bfd\Twig\TwigExtension), in which case
+  // this is just to have them shown in a template's debug output.
+
+  if (!isset($variables['element']) || !isset($variables['element']['#theme'])) {
+
+    return;
+  }
+
+  if (!is_array($variables['element']['#theme'])) {
+
+    $variables['element']['#theme'] = [$variables['element']['#theme']]; // Make sure it's iterable
+  }
+
+  foreach ($variables['element']['#theme'] as $suggestion) {
+
+    // Add only suggestions that aren't already set, and are different from the theme's original hook name.
+
+    if (!in_array($suggestion, $suggestions) && $suggestion != $hook) {
+
+      array_unshift($suggestions, $suggestion);
+    }
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_hook_alter() for container templates.
+ */
+function vzbv_generic_theme_suggestions_container_alter(array &$suggestions, array &$variables, string $hook) {
+
+  $name = isset($variables['element']['#name']) ? $variables['element']['#name'] : null;
+  $type = isset($variables['element']['#type']) ? $variables['element']['#type'] : null;
+
+  if ($type !== 'view') {
+
+    return;
+  }
+
+  array_unshift($suggestions, $hook.'__section_teaser');
+}
+
+/**
+ * Implements hook_theme_suggestions_hook_alter() for views templates.
+ */
+function vzbv_generic_theme_suggestions_views_view_alter(array &$suggestions, array &$variables, string $hook) {
+
+  $view = $variables['view'];
+  
+  if (strpos($view->id(), 'site_search') !== false) {
+
+    $variables['label'] = $variables['title']['#markup'] ?? '';
+    $variables['nodes'] = [];
+    
+    if (!empty($view->result)) {
+      
+      $rows = end($variables['rows'])['#rows'];
+
+      foreach ($rows as $row) {
+
+        $variables['nodes'][] = $row['#node'];
+      }
+    }
+    
+    array_unshift($suggestions, $hook.'__site_search');
+  }
+  
+  array_unshift($suggestions, $hook.'__bare');
+}
+
+/**
+ * 
+ * Form alter hooks
+ * 
+ */
+
+/**
+ * Implements hook_form_alter().
+ * 
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ * @param $form_id
+ */
+function vzbv_generic_form_user_login_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  
+  // Add placeholders
+
+  $form['name']['#attributes']['placeholder'] = t('User name');
+  $form['pass']['#attributes']['placeholder'] = t('Password');
+
+  // Inject form classes
+
+  $form['#attributes']['class'][] = 'mt-5';
+
+  foreach (['name', 'pass'] as $field) {
+
+    // Unset titles & descriptions
+
+    foreach (['#title', '#description'] as $attribute) {
+
+      unset($form[$field][$attribute]);
+    }
+
+    if (!isset($form[$field]['#attributes'])) {
+
+      $form[$field]['#attributes'] = [];
+    }
+
+    // Inject classes
+
+    $form[$field]['#attributes']['class'] = ['form-control'];
+  }
+
+  // Submit button
+
+  $form['actions']['submit']['#attributes'] = ['class' => ['btn', 'btn-primary']];  
+}
+
+/**
+ *
+ * Misc
+ * 
+ */
+
+/**
+ * Implements hook_preprocess_hook() for menu-local-task.html.twig.
+ */
+function vzbv_generic_preprocess_menu_local_tasks(&$variables) {
+
+  $routes = ['devel.entities:node.devel_tab', 'entity.node.canonical', 'entity.node.delete_form'];
+
+  foreach ($routes as $route) {
+
+    if (isset($variables['primary'][$route])) {
+
+      unset($variables['primary'][$route]);
+    }
+  }
+}
+
+

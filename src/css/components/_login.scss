@@ -1,0 +1,13 @@
+.user-login-form {
+
+    .form-control {
+
+        margin-top: 0;
+        margin-bottom: map-get($spacers, 1);
+    } 
+
+    .form-submit {
+
+        margin-top: $spacer * .1;
+    } 
+}

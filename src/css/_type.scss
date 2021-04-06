@@ -1,0 +1,198 @@
+
+%hyphenate {
+ 
+  // Works best in conjunction with Hyphenator service.
+  // 
+  // For CSS-only solutions, see:
+  // - https://justmarkup.com/articles/2015-07-31-dealing-with-long-words-in-css/
+  // - https://css-tricks.com/almanac/properties/h/hyphenate/
+
+  // word-break: break-all;
+  // word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+// Content
+
+main {
+
+  font-size: $font-size-base-main;
+}
+
+// Headings
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+    
+  font-family: $font-family-base;
+  font-weight: $font-weight-bold;
+  line-height: 1.5;
+}
+
+.title {
+
+  @extend .h4;
+  @extend %hyphenate;
+}
+
+section {
+
+  header {
+
+    .title {
+
+      font-size: $font-size-px30; 
+    }
+  }
+
+  article {
+
+    .title {
+
+      font-size: $font-size-px24;
+    }
+  }
+}
+
+.page-title {
+
+  @include readability(100%);
+
+  .title {
+
+    font-size: $h1-font-size; 
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .subtitle {
+
+    font-size: $h4-font-size; 
+    margin-bottom: 0;
+  }
+}
+
+.hero-space .page-title {
+
+  @include readability;
+
+  .title {
+
+    font-size: $h2-font-size; 
+    margin-top: map-get($spacers, 6);
+  }
+}
+
+.crossheading {
+
+  @extend .h4;
+
+  padding-top: $grid-gutter-width;
+  padding-bottom: $grid-gutter-width;
+
+  padding-left: ($grid-gutter-width);
+  padding-right: ($grid-gutter-width);
+
+  color: $white;
+  background-color: $battleshipGrey;  
+
+  margin-top: map-get($spacers, 6);
+  margin-bottom: map-get($spacers, 5);
+
+  line-height: 1.3;
+
+  @include media-breakpoint-down(sm) { 
+
+    padding-left: ($grid-gutter-width / 2);
+    padding-right: ($grid-gutter-width / 2);
+  }
+}
+
+.is-mobile {
+
+  h2.title {
+
+    font-size: $font-size-px24; 
+  }
+
+  h3.title {
+
+    font-size: $font-size-px20; 
+  }
+
+  .page-title {
+
+    margin-top: ($grid-gutter-width / 2);
+
+    .title {
+
+      font-size: $font-size-px30; 
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    .subtitle {
+
+      font-size: $font-size-px18; 
+      margin-top: 0.75rem;
+      margin-bottom: 0;
+    }
+  }
+
+  .hero-space {
+
+    .page-title {
+
+      margin-top: 1.25rem;
+    }
+
+    .page-title .title, .claim--title {
+
+      font-size: $font-size-px24;
+    }
+
+    .title {
+
+      font-size: $font-size-px18;
+    }
+  }
+}
+
+// Misc
+
+a.readmore {
+
+  text-transform: uppercase;
+  display: inline-block;
+  font-size: $font-size-base;
+}
+
+a.cta {
+
+  text-transform: uppercase;
+  text-align: center;
+
+  font-size: $font-size-base;
+  
+  display: inline-block;
+
+  padding-left: $grid-gutter-width;
+  padding-right: $grid-gutter-width;
+  
+  padding-top: ($grid-gutter-width / 2);
+  padding-bottom: ($grid-gutter-width / 2);
+
+  background-color: $snotGreen;
+  border-color: $snotGreen;
+
+  &:hover {
+
+      border-color: $snotGreen;
+  }
+}
+
+p:empty { // Cf. https://css-tricks.com/almanac/selectors/e/empty/
+
+   display: none;
+}

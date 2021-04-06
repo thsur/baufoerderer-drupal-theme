@@ -1,0 +1,32 @@
+
+main {
+
+    padding-bottom: map-get($spacers, 6);
+
+    overflow-wrap: break-word;
+
+    line-height: 1.78;
+
+    nav {
+
+        line-height: 1.5;
+    }
+
+    a {
+
+        color: $sickGreen;
+
+        &:hover {
+
+          color: darken($sickGreen, 10%);
+        }
+    }
+}
+
+.front-page {
+
+    main {
+
+        padding-bottom: 0;
+    }
+}

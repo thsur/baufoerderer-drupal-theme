@@ -1,0 +1,120 @@
+{# 
+/**
+ * A field's label.
+ *
+ * Usage:
+ * label(node.field, {some: 'setting'}) 
+ *
+ * @param FieldItemListInterface - a node.field
+ * @param Object                 - optional settings as a JSON-like object
+ */
+#}
+{% macro label(field, settings = {}) %}
+    {%
+        set default = {class: 'label h4'} 
+    %}
+    {%
+        set settings = default | merge(settings)
+    %}
+    {%
+        set label = (settings.label ? settings.label : (field | bfd_field_label))
+    %}
+    {% if label %}
+        <div class="{{ settings.class }}">{{ label }}</div>
+    {% endif %}
+{% endmacro %}
+
+{# 
+/**
+ * A field's label as headline.
+ *
+ * Usage:
+ * headline(node.field, {some: 'setting'}) 
+ *
+ * @param FieldItemListInterface - a node.field
+ * @param Object                 - optional settings as a JSON-like object
+ */
+#}
+{% macro headline(field, settings = {}) %}
+    {%
+        set default = {class: 'headline h4', tag: 'h3'} 
+    %}
+    {%
+        set settings = default | merge(settings)
+    %}
+    {%
+        set label = (settings.label ? settings.label : (field | bfd_field_label))
+    %}
+    {% if label %}
+        <{{ settings.tag }} class="{{ settings.class }}">{{ label }}</{{ settings.tag }}>
+    {% endif %}
+{% endmacro %}
+
+{# 
+/**
+ * A field's children.
+ *
+ * Usage:
+ * children(node.field, {some: 'setting'}) 
+ *
+ * @param FieldItemListInterface - a node.field
+ * @param Object                 - optional settings as a JSON-like object
+ */
+#}
+{% macro items(field, settings = {}) %}
+    {%
+        set default = {wrapper: 'div', attributes: {}} 
+    %}
+    {%
+        set settings = default | merge(settings)
+    %}
+   {% for item in (field | view | children) %}
+        {{ item }}
+    {% endfor %}
+{% endmacro %}
+
+{# 
+/**
+ * A field with a label, and the field's items.
+ *
+ * Usage:
+ * with_label(node.field, {some: 'setting'}) 
+ *
+ * @param FieldItemListInterface - a node.field
+ * @param Object                 - optional settings as a JSON-like object
+ */
+#}
+{% macro with_label(field, settings = {}) %}
+    {%
+        set default = {label: {}, values: {}} 
+    %}
+    {%
+        set settings = default | merge(settings)
+    %}
+    {{ _self.label(field, settings.label) }}
+    {{ _self.items(field, settings.values) }}
+{% endmacro %}
+
+
+/**
+ * An image.
+ * 
+ * @param FieldItemListInterface 
+ * @param Object - optional settings as a JSON-like object
+ */
+#}
+{% macro image(field, settings = {}) %}
+    {%
+        set info = field | bfd_media_info
+    %}
+    {% for item in info %}
+        {% for file in item.fileinfo %}
+          <div>
+            <img src="{{ file.url }}" 
+                 alt="{{ item.alt == file.filename ? '' : item.alt }}"
+                 title="{{ item.title == file.filename ? '' : item.title }}"
+                 class="img-fluid"> 
+          </div>
+        {% endfor %}
+    {% endfor %}
+{% endmacro %}

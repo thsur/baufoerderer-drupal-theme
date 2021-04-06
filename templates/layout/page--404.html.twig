@@ -1,0 +1,24 @@
+{% extends "page.html.twig" %}
+
+{% block page_title %}
+    
+  <div class="page-title mt-6 mb-4">
+    <h1 class="display-4">Das tut uns leid...</h1>
+  </div>
+    
+{% endblock %}
+
+{% block content %}
+  
+  <p class="lead mb-1">...aber wir konnten die Seite, die Sie gesucht haben, leider nicht finden.</p>
+  <p class="lead pb-6">Vielleicht können wir Ihnen mit einem unserer folgenden Angebote weiterhelfen?</p>
+
+  <div class="mt-6">
+    {% include '@vzbv_generic/content/_target_audience_teasers.html.twig' %}
+  </div>
+
+  <div class="trail--subsidy-teaser">
+    {{ drupal_block('bfd_subsidy_search_teaser', wrapper = false) }}
+  </div>
+
+{% endblock %}

@@ -1,0 +1,20 @@
+/**
+ * Accessibility settings
+ *
+ * Cf.:
+ * - https://jmperezperez.com/outline-focus-ring-a11y/
+ */
+
+.no-focus-outline a:focus,
+.no-focus-outline button:focus {
+
+  outline: none;
+}
+
+.form-control:focus, form .btn:focus {
+
+    box-shadow: inset 0 0 0 0.2rem $focus-shadow !important;
+    border-color: $focus !important;
+
+    outline: 0;
+}

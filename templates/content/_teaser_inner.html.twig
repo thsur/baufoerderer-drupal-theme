@@ -1,0 +1,29 @@
+{#
+/**
+ * Partial to render a node teaser. 
+ */
+#}
+{% set url          = path('entity.node.canonical', {'node': node.id}) %}
+{% set desc         = bfd_node_get_meta_desc(node) %}
+
+{% if not desc %}
+    {% set truncate_len = truncate_len ?? 30 %}
+
+    {% if node.bundle == 'guide' %}
+        {% set teaser = node.field_main_content_paragraphs.0.entity.field_text.value %}
+    {% else %}
+        {% set teaser = node.body.value %}
+    {% endif %}    
+{% endif %}
+
+<h3 class="title mb-2">
+    <a href="{{ url }}" rel="bookmark" aria-label="{{ node.label }} - Teaser">{{ node.label | bfd_hyphenate }}</a>
+</h3>
+
+{% if desc %}
+    <p>{{ desc }}</p>
+{% else %}
+    <p>{{ teaser | bfd_strip_tags | bfd_entity_decode | bfd_strip_nbsp | bfd_truncate_words(truncate_len) }}</p>
+{% endif %}
+
+<a href="{{ url }}" rel="bookmark" class="readmore" aria-label="Mehr lesen: {{ node.label }}"><i class="fas fa-chevron-right"></i> jetzt lesen</a>

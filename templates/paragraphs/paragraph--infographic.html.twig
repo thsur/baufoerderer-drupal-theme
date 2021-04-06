@@ -1,0 +1,16 @@
+{% extends 'paragraph.html.twig' %}
+{% import '@vzbv_generic/macros/images.twig' as images %}
+
+{%
+  set info = paragraph.field_media_file | bfd_media_info
+%}
+
+{% block content %}
+  {% for item in info %}
+    {% for file in item.fileinfo %}
+      <div>
+        {{ images.image(file, item) }}
+      </div>
+    {% endfor %}
+  {% endfor %}
+{% endblock %}

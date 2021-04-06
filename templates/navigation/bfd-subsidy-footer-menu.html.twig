@@ -1,0 +1,18 @@
+<div>
+  <div class="subsidy-nav-title h3 mb-2 pt-1">Fördermittel</div>
+  <ul class="nav subsidy-nav">
+  {% for item in data %}
+      {% if item.type == 'separator' %}
+        <li class="divider">
+          <div class="dropdown-divider"></div>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a href="{{ item.url }}" class="nav-link" aria-label="{{ item.name | e }}">
+            {{ item.name | e | bfd_hyphenate }}
+          </a>
+        </li>
+      {% endif %}
+  {% endfor %}
+  </ul>
+</div>

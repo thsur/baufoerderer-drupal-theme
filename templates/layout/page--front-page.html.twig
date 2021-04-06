@@ -1,0 +1,59 @@
+{% extends "page.html.twig" %}
+
+{% block hero_space %}
+    
+  <div class="container-fluid hero-space">
+    <div class="container">
+        <div class="page-title mb-7">
+          <h1 class="title h2">baufoerderer.de - das unabhängige Verbraucherportal zum Thema Bauen und Sanieren</h1>
+        </div>
+    </div>
+    <div class="container subsidy--search-front">
+        {{ drupal_block('bfd_subsidy_search', wrapper = false) }}
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block lead %}
+  <div class="container-fluid relaunch-announcement">
+    <div class="container">
+        <div class="title h2">baufoerderer.de wird eingestellt</div>
+        <p class="py-2">
+          Das Verbraucherportal baufoerderer.de wird zum 01.01.2021 eingestellt. Für Ihre zukünftige Informationssuche empfehlen wir folgende Internetangebote:
+        </p>
+        <ul class="fa-ul">
+          <li>
+            <span class="fa-li"><i class="fas fa-check-circle"></i></span> 
+            Informationen zur KfW-Förderung von <a href="https://www.kfw.de/inlandsfoerderung/Privatpersonen/Neubau/?kfwmc=vt.kooperationen%7Cper.baufoerderer.ebs-au.startseite.infobox%7Cneu&wt_cc1=wohnen&wt_cc2=pri%7Cbestandimmobilie">Neubauten</a> und <a href="https://www.kfw.de/inlandsfoerderung/Privatpersonen/Bestandsimmobilien/?kfwmc=vt.kooperationen%7Cper.baufoerderer.ebs-au.startseite.infobox%7Cbestand&wt_cc1=wohnen&wt_cc2=pri%7Cbestandimmobilie">Bestandsimmobilien</a> direkt bei der KfW 
+          </li>
+          <li>
+            <span class="fa-li"><i class="fas fa-check-circle"></i></span> 
+            <a href="https://verbraucherzentrale-energieberatung.de/sanieren-bauen/">Energieberatung</a> des Verbraucherzentrale Bundesverbands
+          </li>
+          <li>
+            <span class="fa-li"><i class="fas fa-check-circle"></i></span> 
+            <a href="https://www.verbraucherzentrale.de/wissen/energie">Beratungsangebot</a> der Verbraucherzentralen
+          </li>
+          <li>
+            <span class="fa-li"><i class="fas fa-check-circle"></i></span> 
+            Förderung für mehr Energieeffizienz: Der <a href="https://www.deutschland-machts-effizient.de/KAENEF/Navigation/DE/Foerderprogramme/foerderprogramme-energieeffizienz.html">Förderwegweiser des BMWi</a> 
+          </li>
+        </ul>
+    </div>
+  </div>
+{% endblock %}
+
+{% block page_title %}
+{% endblock %}
+
+{% block post_content %}
+
+<div class="teaser--news--current container-fluid">
+    <div class="container">
+      <div class="h3 pb-2">Aktuelle Nachrichten</div>
+      {{ drupal_block('bfd_news', {type: 'current'}, wrapper = false) }}
+    </div>
+</div>
+
+{% endblock %}

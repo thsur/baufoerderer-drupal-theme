@@ -1,0 +1,19 @@
+
+.opaque {
+
+    opacity: 0.2; // 0.5
+}
+
+.visually-hidden {
+
+  @include sr-only;
+  @include sr-only-focusable;
+}
+
+@mixin readability($width: 70%) {
+
+    @include media-breakpoint-up(md) {
+
+      max-width: $width;
+    }
+}

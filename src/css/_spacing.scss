@@ -1,0 +1,12 @@
+main {
+
+    @include media-breakpoint-down(md) {
+
+        .px-7 {
+
+            // Same as .px-5
+            padding-left: map-get($spacers, 5) !important;
+            padding-right: map-get($spacers, 5) !important;
+        }
+    }
+}

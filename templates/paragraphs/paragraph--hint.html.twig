@@ -1,0 +1,18 @@
+{% import '@vzbv_generic/macros/fields.twig' as field %}
+
+{%
+  set classes = [
+    'component--accented',
+    'component--' ~ paragraph.bundle|clean_class
+  ]
+%}
+
+{% block paragraph %}
+  <div{{ attributes.addClass(classes) }}>
+    {% block content %}
+      {{ field.label(paragraph.field_headline, {label: paragraph.field_headline.value}) }}
+      <div>{{ field.items(paragraph.field_text) }}</div>
+    {% endblock %}
+  </div>
+{% endblock paragraph %}
+

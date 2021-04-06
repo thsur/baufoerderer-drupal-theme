@@ -1,0 +1,24 @@
+{% extends "page.html.twig" %}
+
+{% block page_title %}
+    
+    {%
+        set title = _context.node.title.value
+    %}
+
+    {% if title %}
+      <div class="page-title mb-5 px-7">
+        <div{{ title_attributes.addClass(['title', 'h1']) }}>{{ title }}</div>
+      </div>
+    {% endif %}
+  
+{% endblock %}
+
+{% block trail %}
+    
+  <div class="lead--subsidy-teaser">
+    {{ drupal_block('bfd_subsidy_search_teaser', { type: 'form' }, wrapper = false) }}
+  </div>
+
+{% endblock %}
+      

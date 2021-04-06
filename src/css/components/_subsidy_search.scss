@@ -1,0 +1,395 @@
+.subsidy--search {
+
+    background-color: $battleshipGrey;
+
+    padding-left: $grid-gutter-width;
+    padding-right: $grid-gutter-width;
+
+    color: $white;
+
+    .claim {
+
+        font-size: $font-size-px24;
+        
+        padding-top: $grid-gutter-width;
+        padding-bottom: 0.65rem;
+    }
+
+    .claim--title {
+
+        font-size: $font-size-px30;
+        margin: 0;
+    }
+
+    .claim--subtitle {
+        
+        font-size: $font-size-base-main;
+    }
+}
+
+.subsidy--reset {
+
+    facets-reset {
+
+        transform: translateY(-20px);
+        margin-left: auto;
+    }
+    
+    button {
+
+        background-color: transparent;
+        border: none;
+
+        color: inherit;
+        font-size: $font-size-px14;
+
+
+        .fas {
+
+            color: $link-color;
+            vertical-align: middle;
+        }
+    }
+
+    &:first-of-type {
+
+        height: 0;
+        opacity: 0;
+
+        transform: translateY(15px);
+
+        text-align: right;
+
+        @include media-breakpoint-down(sm) { 
+
+            height: auto;
+            opacity: 1;
+        }
+
+        button {
+
+            padding-left: 0;
+        }
+    }
+}
+
+.subsidy--facet {
+
+    margin-bottom: map-get($spacers, 4);
+
+    .title {
+
+        font-size: $font-size-px18;
+        font-weight: bold;
+        line-height: 2em;
+
+    }
+    
+    .info-icon {
+
+        .fa-stack {
+
+            vertical-align: text-top;
+        }
+
+        .fa-xs {
+
+            font-size: $font-size-xs;
+        }
+    }
+
+    select {
+
+        width: 100%;
+        height: calc(1.625em + 24px);
+
+        border-radius: 0;
+        // -webkit-appearance: inherit; // to get rid of sys-generated rounded corners  
+    }
+}
+
+.subsidy--facet-categories  {
+
+    margin-top: map-get($spacers, 2);
+    margin-bottom: map-get($spacers, 3);
+
+    .helptext {
+
+        font-size: $font-size-px14;
+        opacity: 0.8;
+
+        white-space: nowrap;
+    }
+
+    form {
+
+        columns: 3;
+
+        .disabled {
+
+            opacity: 0.5;
+        }
+
+        label {
+
+            display: table;
+        }
+
+        input {
+
+            display: table-cell;
+            
+            vertical-align: middle;
+            transform: translateY(-2px);
+            
+            margin-right: ($grid-gutter-width / 2); 
+
+        }
+
+        span {
+
+            @extend %hyphenate;
+            display: table-cell;
+        }
+
+    }
+    
+    @include media-breakpoint-down(md) { 
+
+        form {
+
+            columns: 2;
+        }
+    }
+
+    @include media-breakpoint-down(sm) { 
+
+        margin-top: 0;
+
+        form {
+
+            columns: unset;
+        }
+    }
+
+    @include media-breakpoint-down(xs) { 
+
+        .helptext {
+
+            transform: translateY(-7px);
+            display: block;
+        }
+    }
+
+}
+
+.subsidy--counter {
+
+    background-color: $seafoamBlue;
+
+    padding-top: ($grid-gutter-width / 2); 
+    padding-bottom: ($grid-gutter-width / 2); 
+
+    padding-left: $grid-gutter-width;
+    padding-right: $grid-gutter-width;
+
+    margin-bottom: $grid-gutter-width;
+    margin-left: -($grid-gutter-width);
+    margin-right: -($grid-gutter-width);
+
+    font-size: $font-size-px24;
+
+    position: relative;
+    
+    &:after { 
+
+      // Cf. https://codepen.io/Paulie-D/pen/vKkmq
+        
+      content: '';
+      position: absolute; 
+      
+      bottom: 0; 
+      left: 50%; 
+      
+      height: 0; /* we're doing this with borders remember */
+      width: 0; 
+
+      border-width: 25px;
+      border-style: solid;
+      border-color: $seafoamBlue;
+
+      transform: translateY(50px); 
+
+      /* now we make some of the borders disappear*/
+      border-bottom-color: transparent;
+      border-left-color: transparent;
+      border-right-color: transparent;
+    }
+
+    // Unlike box-shadow, the drop shadow filter follows the form the element it's applied to.
+    // 
+    // Cf.:
+    // - https://css-tricks.com/using-box-shadows-and-clip-path-together/
+    // - https://developer.mozilla.org/en-US/docs/Web/CSS/filter
+    filter: drop-shadow(0 2px 4px rgba(50, 50, 0, 0.3));
+}
+
+.subsidy--submit {
+
+    .btn {
+
+        background-color: $link-color;
+        width: 100%;
+
+        text-transform: uppercase;
+        padding: 12px;
+    }
+}
+
+.lead--subsidy-teaser {
+    
+    margin-bottom: ($grid-gutter-width / 2); 
+    
+    .subsidy--search-teaser {
+
+        background-color: $battleshipGrey;
+        color: $white;
+
+        padding-top: ($grid-gutter-width / 2); 
+        padding-bottom: ($grid-gutter-width / 2); 
+
+        padding-left: $grid-gutter-width;
+        padding-right: $grid-gutter-width;
+
+
+        form {
+
+            align-items: center;
+
+            span {
+
+                font-size: $font-size-px24;
+                
+                &.subsidy--category {
+
+                    font-size: $font-size-px18;
+                }
+            }
+
+            @include media-breakpoint-down(md) {
+
+                span {
+
+                    font-size: $font-size-px18;
+                    display: block;
+
+                    &.subsidy--category {
+
+                        font-size: $font-size-px14;
+                    }
+                }
+            }
+        }
+
+        .btn {
+            
+            background-color: $snotGreen;
+
+            text-transform: uppercase;
+            padding: 12px;
+
+            width: 100%;
+
+            &:hover {
+
+                background-color: $link-color;
+            }
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+
+        background-color: $battleshipGrey;
+        padding-top: 1px;
+        
+        .subsidy--search-teaser {
+
+            padding-left: 0;
+            padding-right: 0;
+        } 
+    }
+
+    @include media-breakpoint-down(sm) {
+
+        .btn {
+
+            margin-top: ($grid-gutter-width / 2);
+        }
+    }
+}
+
+.trail--subsidy-teaser {
+
+    @extend .lead--subsidy-teaser;
+
+    .container {
+
+        background-color: $battleshipGrey;
+    }
+
+    @include media-breakpoint-only(md) {
+
+        .btn {
+
+            font-size: $font-size-sm;
+        }
+    }
+
+    @include media-breakpoint-up(lg) {
+
+        .container {
+
+            padding: 0;
+        }        
+    }
+}
+
+.front-page {
+
+    .hero-space {
+        
+        .subsidy--search-front {
+
+            @include media-breakpoint-down(md) {
+                
+                display: table;
+                        
+                width: 100%;
+                min-width: 100%;
+
+                background-color: map-get($component-colors, 'subsidy-search-front');
+
+                .subsidy--search {
+                    
+                    background-color: transparent;
+                }
+            }
+
+            @include media-breakpoint-down(sm) {
+
+                background-color: map-get($component-colors, 'subsidy-search-front-mobile');
+                
+                .subsidy--search {
+                    
+                    padding-left: 0;
+                    padding-right: 0;
+                }
+            }
+        }
+    }
+
+    .subsidy--search {
+
+        background-color: map-get($component-colors, 'subsidy-search-front');
+    }
+}

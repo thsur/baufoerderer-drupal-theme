@@ -1,0 +1,41 @@
+
+.ribbon--wrapper {
+
+    float: right;
+}
+
+.ribbon--ribbon {
+    
+    position: relative;
+    right: -8px;
+
+    font-size: $font-size-px30;
+    font-weight: bold;
+
+    display: inline-block;
+    padding: map-get($spacers, 3) map-get($spacers, 4);
+    
+    background: $snotGreen;
+    
+    border-radius: 0 0 2px 2px;
+    box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+
+    @include media-breakpoint-down(md) {
+    
+        font-size: $font-size-px24;
+    }
+}
+
+.ribbon--after {
+
+    content: '';
+    display: block;
+    
+    position: absolute;
+    bottom: -10px;
+    right: 0px;
+    
+    border-style: solid;
+    border-width: 8px 8px 2px 0;
+    border-color: darken($snotGreen, 20%) transparent transparent transparent;
+}

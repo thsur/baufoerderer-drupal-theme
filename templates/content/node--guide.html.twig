@@ -1,0 +1,21 @@
+{% extends "node.html.twig" %}
+
+{% block content %}
+  {{ parent() }}
+
+  {% if content.field_source_reference %}
+    <p class="mb-5">{{ node.field_source_reference.value | raw }}</p>
+  {% endif %}
+
+  {# Calculator #}
+  {{ drupal_block('bfd_calculator', wrapper = false) }}
+{% endblock %}
+
+{% block related %}
+    {{ drupal_block('bfd_related', {type: 'article', label: 'Mehr Artikel zum Thema'}, wrapper = false) }}
+    {{ drupal_block('bfd_related', {type: 'subsidy', label: 'Verwandte Fördermittel'}, wrapper = false) }}
+    {{ drupal_block('bfd_related', {type: 'guide',   label: 'Mehr Tipps & Ratgeber'}, wrapper = false) }}
+{% endblock %}
+
+{% block date %}
+{% endblock %}

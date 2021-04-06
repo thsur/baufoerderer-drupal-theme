@@ -1,0 +1,78 @@
+{% macro target_audience_link(nid, title, prepend) %}
+  {%
+    set name = title
+  %}
+
+  {%
+    set url = path('entity.node.canonical', {'node': nid})
+  %}
+  <a href="{{ url }}" alt="{{ name }}" title="{{ name }}">{{ prepend | raw }}{{ name }}</a>
+{% endmacro %}
+
+{%
+    set data = [
+
+        {
+            nid: 1367, 
+            title: 'Energieeffizient sanieren', 
+            link_as: 'Energieeffizienz', 
+            text: 'Meine Immobilie sanieren, z.B. um Energie zu sparen.',
+            icon: 'icongrafik-energieeffizientes-sanieren.svg'
+        },
+        {
+            nid: 1369, 
+            title: 'Barrierefrei & altersgerecht umbauen',
+            link_as: 'Barrierefreiheit',
+            text: 'Altersgerecht, barrierefrei oder einbruchssicher umbauen.',
+            icon: 'icongrafik-altersgerecht-bauen.svg'
+        },
+        {
+            nid: 1371, 
+            title: 'Energieeffizient bauen',
+            link_as: 'Bauen',
+            text: 'Alles Wichtige rund um das Thema Neubau.',
+            icon: 'icongrafik-energieeffizientes-bauen.svg'
+        },
+        {
+            nid: 1373, 
+            title: 'Haus oder Wohnung kaufen',
+            link_as: 'Immobilie kaufen',
+            text: 'Wie Sie Ihre Finanzierung richtig planen und Risiken vermeiden.',
+            icon: 'icongrafik-wohnungseigentum.svg'
+        }
+    ]
+%}
+
+<div class="row target-audience--teasers">
+    {% for item in data %}
+        
+        {%
+            set url = path('entity.node.canonical', {'node': item.nid})
+        %}
+
+        <div class="col-md-12 col-lg-6 target-audience--teaser">
+            <div class="row no-gutters">
+                <div class="col-lg-3 col-md-3 col-sm-12 target-audience--icon">
+                    <img src="/{{ directory }}/images/icons/{{ item.icon }}" title="{{ item.title }}" alt="">
+                </div>
+                <div class="col-lg-9 col-md-9 col-sm-12">
+                    <h2 class="h6 target-audience--topic">{{ item.title }}</h2>
+                    <p>
+                       <a href="{{ url }}" alt="{{ item.title }}" title="{{ item.title }}" 
+                          aria-label="Link zum Schwerpunkt-Thema {{ item.title }}">
+                        {{ item.text | raw }}
+                       </a> 
+                    </p>
+                    <div class="target-audience--link">
+                       <a href="{{ url }}" alt="{{ item.title }}" title="{{ item.title }}"
+                          aria-label="Link zum Schwerpunkt-Thema {{ item.title }}">
+                        <i class="fas fa-chevron-right"></i>
+                        {{ "Einstieg " ~ item.link_as }}
+                       </a> 
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% endfor %}
+</div>

@@ -1,0 +1,22 @@
+
+/**
+ * Sticky footer
+ *
+ * Cf. https://tympanus.net/codrops/css_reference/flexbox/
+ */
+
+body > div.off-canvas {
+
+    display: flex;
+
+    // Make sure it's at least as tall as the viewport 
+    min-height: 100vh;
+
+    // Lay items out vertically 
+    flex-direction: column;
+}
+
+main {
+
+    flex-grow: 1;
+}

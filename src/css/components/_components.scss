@@ -1,0 +1,214 @@
+
+@mixin component-base() {
+
+    margin-bottom: $grid-gutter-width;
+}
+
+@mixin component-accented($icon: $fa-var-link) {
+
+    @extend .bg-teaser;
+    
+    
+    .label {
+
+        padding: ($grid-gutter-width / 2) ($grid-gutter-width * 2);
+
+        padding-top: map-get($spacers, 4); 
+        padding-left: ($grid-gutter-width);
+
+        color: $white;
+        background-color: $seafoamBlue;
+
+        @include readability(100%);
+
+        &:before { 
+
+            @include fa-icon();
+
+            content: fa-content($icon);
+
+            font-family: $font-family-fa-regular;
+            font-size: $font-size-px30;
+
+            color: $greyishBrown;
+
+            padding-right: ($grid-gutter-width / 2);
+
+            @include media-breakpoint-down(sm) {
+
+                content: '';
+                padding: 0;        
+            }
+        }
+    }
+
+    div:last-child {
+
+        padding: 0 ($grid-gutter-width * 2) $grid-gutter-width;
+
+        @include media-breakpoint-down(sm) {
+
+            padding-left: $grid-gutter-width;        
+            padding-right: $grid-gutter-width;        
+        }
+    }
+}
+
+@mixin component-remark() {
+
+    @include component-base;
+    
+    align-items: center;
+
+    .label {
+
+        margin-top: 0 !important;
+    }
+
+    & > div:first-child {
+
+        text-align: center;
+
+        @include media-breakpoint-down(sm) {
+
+            // display: none;
+        }
+    }
+}
+
+.component--base {
+
+    @include component-base;
+}
+
+.component--type--infographic {
+
+    & > div {
+
+        background-color: $snotGreen;
+    }
+
+    img {
+
+        max-height: 100vh; 
+        object-fit: contain; 
+    }
+}
+
+.component--accented {
+
+    @include component-base;
+    @include component-accented;
+
+    ul {
+
+        margin-bottom: 0;
+        margin-top: ($grid-gutter-width / 2);
+    }
+}
+
+.component--entity-reference {
+
+    @include component-accented($fa-var-sync);
+}
+
+.component--checklist {
+
+    @include component-accented($fa-var-check-double);
+}
+
+.component--downloads {
+
+    @include component-accented($fa-var-download);
+}
+
+.component--link.type--field-external-links {
+
+    @include component-accented($fa-var-external-link-alt);
+}
+
+.component--hint {
+
+    @include component-accented($fa-var-info-circle);
+    
+    .label:before {
+
+        transform: scale(1.1); 
+    }
+}
+
+.component--cta {
+
+    @include component-base;
+    @extend .bg-teaser;
+
+    align-items: center;
+
+    padding-left: $grid-gutter-width;
+    padding-right: $grid-gutter-width;
+    padding-bottom: ($grid-gutter-width / 2);
+
+    & > div {
+
+        padding-top: ($grid-gutter-width / 2);
+    }
+
+    .cta {
+
+        width: 100%;
+    }
+}
+
+.component--remark {
+
+    @include component-remark;
+}
+
+.component--type--video {
+
+    @include media-breakpoint-up(lg) {
+
+        .embed-responsive {
+
+            max-height: 75vh;
+        }
+    }
+}
+
+.component--subsidy-takeaway {
+
+    @include component-accented($fa-var-download);
+
+    .label {
+
+        background-color: $gunmetal;
+
+        &::before {
+
+            color: $white;
+        }
+    }
+
+    & > div > ul {
+
+        margin-bottom: map-get($spacers, 5);
+
+        &:last-child {
+
+            margin-bottom: 0;
+        }
+
+        .fa-li {
+
+            left: -1em;
+            text-align: left;
+
+            color: $sickGreen;
+        }
+        
+        a {
+
+            padding-left: map-get($spacers, 2);
+        }
+    }
+}

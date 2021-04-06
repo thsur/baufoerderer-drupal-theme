@@ -1,0 +1,29 @@
+{% extends "page.html.twig" %}
+
+{% block hero_space %}
+    
+    {%
+      set images = {
+
+        1367: 'sanieren.svg',
+        1369: 'umbauen.svg',
+        1371: 'bauen.svg',
+        1373: 'kaufen.svg'
+      }
+    %}
+
+    <div class="container hero-space--image">
+      <img src="/{{ directory }}/images/header/{{ images[node.nid.value] }}" title="{{ node.title.value }}" alt="">
+    </div>
+ 
+{% endblock %}
+      
+
+{% block trail %}
+    
+  <div class="trail--subsidy-teaser">
+    {{ drupal_block('bfd_subsidy_search_teaser', { type: 'form' }, wrapper = false) }}
+  </div>
+
+{% endblock %}
+      

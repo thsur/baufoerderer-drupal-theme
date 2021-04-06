@@ -1,0 +1,7 @@
+{% set attributes = attributes.addClass('clearfix', 'text-formatted', field_name) %}
+
+<div{{ attributes }}>
+  {% for item in items %}
+    <div{{ item.attributes }}>{{ item.content }}</div>
+  {% endfor %}
+</div>

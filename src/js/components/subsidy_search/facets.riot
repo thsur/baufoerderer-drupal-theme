@@ -1,0 +1,267 @@
+
+<facets>
+
+  <div class="subsidy--reset row" if={ displayController.show('reset') }>
+    <facets-reset class-hidden="d-none" class-shown="d-inline" class="col"/>
+  </div>
+
+  <div class="row">
+    <div class="subsidy--facet col-xs-12 col-md-4">
+      <facets-title title="Vorhaben" text={ help.get('purpose') }/>
+      <facets-select items={ terms.getVocab('purpose') } type="purpose" aria="Hier können Sie Ihr Vorhaben wählen (optional)" />
+    </div>
+
+    <div class="subsidy--facet col-xs-12 col-md-4">
+      <facets-title title="Förderart" text={ help.get('type') }/>
+      <facets-select items={ terms.getVocab('type') } type="type" 
+                     aria="Hier können Sie die von Ihnen gewünschte Förderart wählen (optional)" />
+    </div>
+
+    <div class="subsidy--facet col-xs-12 col-md-4">
+      <facets-title title="Region" text={ help.get('region') }/>
+      <facets-select items={ terms.getVocab('region') } type="region" 
+                     aria="Hier können Sie die Fördermittel, die angezeigt werden sollen, auf einen bestimmte Region begrenzen" />
+    </div>
+  </div>
+
+  <div class="row" if={ displayController.show('categories') }>
+    <div class="subsidy--facet col-sm-12 subsidy--facet-categories">
+      <facets-title title="Rubriken" text={ help.get('categories') }>
+        <span class="helptext">- Mehrfachauswahl möglich -</span>
+      </facets-title>
+      <facets-checkbox items={ terms.getVocab('categories') } type="categories"
+                       aria="Hier können Sie genauer eingrenzen, welche Fördermittel angezeigt werden sollen, etwa alle zum Thema 'Energieeffizienz' oder 'Barrierefreiheit'" />
+    </div>
+  </div>
+
+  <div class="subsidy--reset row" if={ displayController.show('reset') }>
+    <facets-reset class-hidden="invisible" class-shown="visible"/>
+  </div>
+
+  <div class="subsidy--submit row" if={ displayController.show('submit') }>
+    <facets-submit action="{ props.data['submit_to'] }" class="col-xs-12 col-md-4 offset-md-8 pb-7 pt-2"/>
+  </div>
+
+  <div class="subsidy--counter row no-gutters" if={ displayController.show('counter') }>
+    <facets-counter counter="{ counter.get() }" class="col"></facets-counter>
+  </div>
+  
+  <script>
+
+    import broadcaster from '../../app/broadcaster';
+    import history     from '../../app/history';
+
+    import { install } from 'riot';
+    import difference  from 'lodash/difference';
+    import includes    from 'lodash/includes';
+
+
+    import { Terms }              from './terms';
+    import { Nodes }              from './nodes';
+    import { Counter }            from './counter';
+    import { Help }               from './help';
+    import { DisplayController }  from './facets_display_controller';
+
+    let root;
+
+    /**
+     * Get intial terms data.
+     * 
+     * @param  Object - term id, label map
+     * @param  Array  - pre-selected term ids coming in from either the server or the browser's history object
+     * @return Object
+     */
+    function getTerms (data, selected) {
+
+      const terms = {};
+
+      _.each(data, function (values, key) {
+
+        const vocab = key.substring(key.lastIndexOf('_') + 1);
+        const items = [];
+
+        _.each(values, function (value) {
+
+          items.push({id: value.id, value: value.value, selected: includes(selected, value.id), disabled: false})
+        });
+
+        terms[vocab] = items;
+      });
+
+      return terms;
+    }
+    
+    /**
+     * Update service to update data, models, and views.
+     *  
+     * @param Object - main riot component
+     */
+    const UpdateService = function (rootComponent) {
+
+      this.component = rootComponent;
+      this.terms     = rootComponent.terms;
+      this.nodes     = rootComponent.nodes;
+      this.counter   = rootComponent.counter;
+    };
+
+    UpdateService.prototype = {
+
+      resetView: function () {
+
+        this.terms.enableAll();
+        this.terms.unselectAll();
+        this.nodes.showAll();
+        this.counter.reset();
+      },
+
+      updateView: function (selected_terms) {
+
+        // Collect all nodes associated with all currently selected terms 
+        
+        const active_nodes    = this.nodes.getByTermIds(selected_terms); 
+        const active_node_ids = _.keys(active_nodes);
+
+        // Get all currently selectable terms from them 
+
+        const active_terms = this.nodes.getTermIds(active_nodes);
+
+        // Update date
+
+        this.terms.enable(active_terms);
+        this.counter.update(active_node_ids.length);
+
+        // Update DOM
+
+        this.nodes.show(active_node_ids);
+        this.nodes.hide(
+
+          difference(this.nodes.getNodeIds(), active_node_ids)
+        );
+      },
+
+      updateHistory: function (selected_terms) {
+
+        history.replace('subsidy-search', selected_terms.length ? selected_terms : null);
+      },
+
+      update: function (term_id, vocab) {
+
+        // Set selected terms
+        
+        this.terms.update(term_id, vocab);
+        
+        // Get them 
+
+        const selected_terms = this.terms.getSelectedIds();
+
+        // Update data & view
+        
+        selected_terms.length ? this.updateView(selected_terms) : this.resetView();
+
+        // Update history
+
+        this.updateHistory(selected_terms);
+
+        // Dispatch updated data to child components 
+
+        this.component.update();
+      },
+
+      reset: function () {
+
+        this.resetView();
+        this.component.update();
+      }
+    }
+
+    /**
+     * Component plugins for event dispatching.
+     *
+     * Cf.:
+     * - https://riot.js.org/documentation/#plugins
+     * - https://github.com/riot/riot/issues/2671
+     */
+    install(function(component) {
+      
+      component.changeState = function (evt) {
+
+        const term_id = evt.target.value;
+        const vocab   = evt.target.getAttribute('data-type');
+
+        root.updateService.update(term_id, vocab);
+      };
+
+      component.resetState = function (evt) {
+
+        root.updateService.reset();
+      };
+
+      component.isDefaultView = function (evt) {
+
+        return root.updateService.counter.counter.initial == root.updateService.counter.counter.current;
+      };
+
+      component.onSubmit = function (evt) {
+
+        document.getElementById('terms_index').value = JSON.stringify(root.terms.getSelectedIds());
+      }      
+
+      return component;
+    });
+
+    /**
+     * Riot lifecycle events.
+     *
+     * Cf. https://riot.js.org/api/#lifecycle
+     */
+    export default {
+
+      onBeforeMount(props, state) {
+        
+        root = this;
+
+        // Get pre-selected terms (from browser history, coming in from the server side). 
+
+        const selected = history.get('subsidy-search') || props.data.selected;
+        
+        // Collect initial data
+
+        const data = (function () {
+
+          const nodes = props.data['nodes_to_terms'];
+
+          return {
+
+            terms: getTerms(props.data.vocab, selected),
+            nodes: nodes,
+            help:  props.data.help,  
+            total: _.size(nodes),
+            is_front_page: props.data['is_front']
+          }
+        })();
+
+        // Init models & services
+
+        this.terms             = new Terms(data.terms);
+        this.nodes             = new Nodes(data.nodes);
+        this.counter           = new Counter(data.total);
+        this.updateService     = new UpdateService(this);
+        this.help              = new Help(data.help);
+        this.displayController = new DisplayController(data.is_front_page);
+        
+        if (selected.length) {
+
+          this.updateService.updateView(selected);  
+          this.updateService.updateHistory(selected);  
+        } 
+      },
+
+      onMounted(props, state) {
+        
+        broadcaster('facets.init').publish();
+      },
+    };
+
+  </script>
+
+</facets>

@@ -1,0 +1,12 @@
+global-styling:
+  version: 0.2.x
+  css:
+    theme:
+      build/main.css: {}
+global-scripts:
+  version: 0.2.x
+  js:
+    build/main.js: { preprocess: false }
+  dependencies: 
+    - core/jquery
+    - core/jquery.once

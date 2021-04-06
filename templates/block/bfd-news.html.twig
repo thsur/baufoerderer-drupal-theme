@@ -1,0 +1,40 @@
+
+{% if data.type is null %}
+  {% for node in data.data %}
+    <section class="teaser">
+      {% include '@vzbv_generic/content/_teaser.html.twig' %}
+    </section>
+  {% endfor %}
+{% endif %}
+
+{% if data.type == 'topnews' %}
+  {% for node in data.data %}
+    {% 
+      set url = path('entity.node.canonical', {'node': node.id}) 
+    %}
+    <div class="teaser--topnews teaser--block">
+      <div class="ribbon--wrapper">
+        <div class="ribbon--ribbon">
+          Gut zu wissen!
+          <div class="ribbon--after"></div>
+        </div>
+      </div>
+
+      <header>
+        <span>Aktuell</span>
+        <div class="title">
+          <a href="{{ url }}" rel="bookmark">{{ node.field_date | bfd_field_values | join | bfd_date('%e. %B') }}</a>
+        </div>
+      </header>
+      {% include '@vzbv_generic/content/_teaser.html.twig' %}
+    </div>
+  {% endfor %}
+{% endif %}
+
+{% if data.type == 'current' %}
+    {% for node in data.data %}
+      <div class="teaser--news--current--single">
+        {% include '@vzbv_generic/content/_teaser_inner.html.twig' %}
+      </div>
+    {% endfor %}
+{% endif %}

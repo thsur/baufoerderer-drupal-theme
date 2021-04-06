@@ -1,1 +1,1 @@
-# baufoerderer-drupal-theme
+Theme of the late https://www.baufoerderer.de project.

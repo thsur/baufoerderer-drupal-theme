@@ -1,0 +1,47 @@
+
+.hero-space {
+
+    background-image: 
+        url('#{$images}/stage-desktop-blau.svg');
+    background-size: cover;
+    background-repeat: no-repeat;   
+    background-position: center center;
+
+    .page-title {
+
+        color: $white;
+        text-shadow: 0 2px 4px #959595;
+    }
+
+    @include media-breakpoint-down(md) { 
+
+        padding: 0;
+    }
+}
+
+.node--type-target-audience-hub {
+
+    .hero-space--image {
+
+        img {
+
+            width: 100%;
+        }
+
+        @include media-breakpoint-up(md) {
+            
+            margin-top: ($grid-gutter-width / 2);
+            margin-bottom: $grid-gutter-width;
+        }
+
+
+        @include media-breakpoint-down(md) {
+            
+            width: 100%;
+            max-width: 100% !important;
+
+            padding: 0;
+            margin-bottom: ($grid-gutter-width / 2);
+        }
+    }
+}

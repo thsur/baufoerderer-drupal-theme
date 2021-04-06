@@ -1,0 +1,13 @@
+{#
+/**
+ * Render a custom block to display a list of teasers for all pages below the current one.
+ * For available variables, take a look at Drupal's default node.html.twig template.
+ */
+#}
+
+{{ content.body }}
+{{ drupal_block('bfd_subsidies', wrapper = false) }}
+
+<div class="trail--subsidy-teaser">
+    {{ drupal_block('bfd_subsidy_search_teaser', { type: 'form', 'preselect': true }, wrapper = false) }}
+</div>

@@ -1,0 +1,12 @@
+{% import '@vzbv_generic/macros/fields.twig' as field %}
+
+<div class="component--base component--cta row no-gutters">
+    <div class="col">
+        {{ field.label(null, {label: 'So beantragen Sie Ihren KfW-Kredit'}) }}
+    </div>
+    <div class="col">
+        <a href="{{ data.url }}" 
+           aria-label="Nächste zur Beantragung des Fördermittels"
+           class="cta btn btn-primary">nächste Schritte</a>
+    </div>
+</div>

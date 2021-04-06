@@ -1,0 +1,42 @@
+.node--type-subsidy {
+
+    .lead--subsidy-teaser {
+
+        font-size: $font-size-sm;
+        margin-bottom: map-get($spacers, 1);
+
+        i {
+
+            padding-right: 0.5rem;
+        }
+
+        a:hover {
+
+            color: $link-color;
+        }
+
+        @include media-breakpoint-down(md) {
+
+            background-color: $white;
+            margin-top: map-get($spacers, 4);
+        }
+    }
+
+    .subsidy--profile {
+
+        background-color: map-get($component-colors, 'subsidy-profile');
+
+        padding: map-get($spacers, 6) map-get($spacers, 5);
+
+        ul {
+
+            list-style: none;
+        }
+    }
+
+    .body {
+
+        margin-top: ($grid-gutter-width);
+        margin-bottom: ($grid-gutter-width); 
+    }
+}

@@ -1,0 +1,156 @@
+/* ===========================
+   Variables.scss
+   =========================== */
+
+// Variables
+//
+// Variables should follow the `$component-state-property-size` formula for
+// consistent naming. Ex: $nav-link-disabled-color and $modal-content-box-shadow-xs.
+
+// Font Awesome
+$fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
+
+// Images
+$images: '../../images';
+
+// Options
+//
+// Quickly modify global styling by enabling or disabling optional features.
+$enable-caret:                                false;
+$enable-rounded:                              true !default;
+$enable-transitions:                          true !default;
+
+// Typography
+$font-family-sans-serif:  "Merriweather Sans", Helvetica, Arial, sans-serif;
+$font-family-monospace:   Menlo, Monaco, Consolas, "Courier New", monospace;
+$font-family-base:        $font-family-sans-serif;
+
+$font-family-fa-brands:  'Font Awesome 5 Brands';
+$font-family-fa-regular: 'Font Awesome 5 Free';
+
+$font-size-base:              1rem; // Assumes the browser default, typically `16px`
+$font-size-base-main:         1.125rem; // Assumes the browser default, typically `16px`
+$font-size-lg:                1.25rem; // 20px
+$font-size-sm:                .875rem; // 14px
+$font-size-xs:                .6875rem; // 11px
+
+// Color system
+$green:             #9BAA27;
+$white:             #fff;
+
+$gunmetal:          rgb(74, 94, 98);
+$warmGrey:          rgb(151, 151, 151);
+$battleshipGrey:    rgb(93, 118, 123);
+$greyishBrown:      rgb(77, 77, 75);
+$snotGreen:         rgb(177, 200, 0);
+$sickGreen:         rgb(155, 170, 39);
+$steelGrey:         rgb(119, 139, 142);
+$seafoamBlue:       rgb(127, 203, 207);
+$cyan:              rgb(247,252,252);
+
+$base-color:        $greyishBrown;
+
+$focus:             rgb(177, 200, 0);
+$focus-shadow:      rgba(177, 200, 0, 0.5);
+
+$theme-colors: (
+
+  "primary": $green
+);
+
+$component-colors: (
+
+  "teaser": rgba(93, 118, 123, 0.05),
+  "subsidy-profile": rgba(93, 118, 123, 0.05),
+  "scroller-to-top": rgba(244, 244, 244, 0.8),
+  "subsidy-search-front": rgba(93, 118, 123, 0.8),
+  "subsidy-search-front-mobile": rgba(93, 118, 123, 0.9),
+  "table": rgba(155, 170, 39, 0.2),
+);
+
+// Spacing
+$spacer: 1rem;
+$spacers: ( 
+
+    0: 0,
+    1: $spacer * .25,
+    2: $spacer * .5,
+    3: $spacer,
+    4: $spacer * 1.5,
+    5: $spacer * 2,
+    6: $spacer * 2.5,
+    7: $spacer * 3,
+    8: $spacer * 3.5,
+    9: $spacer * 4,
+    10: $spacer * 4.5,
+);
+
+// Base Font for HTML
+$font-letter-spacing:       -0.7px;
+$font-weight-bold:          700;
+$font-weight-normal:        400;
+
+$line-height-md: 2; 
+$line-height-lg: 2.5; 
+
+// Paragraphs
+$paragraph-font-family:     $font-family-base;
+
+// Headlines & Sizes
+$font-size-px67:            4.188rem;
+$font-size-px50:            3.125rem;
+$font-size-px40:            2.5rem;
+$font-size-px30:            1.875rem;
+$font-size-px28:            1.75rem;
+$font-size-px24:            1.5rem;
+$font-size-px20:            $font-size-lg;
+$font-size-px18:            $font-size-base-main;
+$font-size-px16:            $font-size-base;
+$font-size-px14:            $font-size-sm;
+
+$h1-font-size:              $font-size-px50; 
+$h1-font-family:            $font-family-base;
+$h1-color:                  $base-color;
+$h1-font-weight:            $font-weight-bold;  
+$h1-letter-spacing:         $font-letter-spacing;
+
+
+$h2-font-size:              $font-size-px40;
+$h2-color:                  $base-color;
+$h2-font-weight:            $font-weight-normal;  
+$h2-letter-spacing:         $font-letter-spacing;
+
+$h3-font-size:              $font-size-px28; 
+$h4-font-size:              $font-size-px24;
+$h5-font-size:              $font-size-px20;
+$h6-font-size:              $font-size-base;
+
+
+// Body
+$body-bg:                   $white;
+$body-color:                $base-color;
+
+// Text Color Palette
+$text-color:                #555555;
+$base-color:                #4D4D4B;
+$readmore-color:            #4D4D4B;
+
+// Header
+$header-background-color:   $white;
+
+// Links
+$link-color:                $sickGreen;
+$link-hover-color:          lighten($link-color, 15%);
+$link-hover-decoration:     none;
+
+// Navbar
+$dropdown-tabs-font-size: $font-size-px18; 
+
+// Dropdown menu
+$dropdown-item-padding-x: 1.8rem;
+
+// Breadcrumb
+$breadcrumb-divider:                quote(">");
+
+// Horizontal ruler
+$hr-margin-y: map-get($spacers, 5); 

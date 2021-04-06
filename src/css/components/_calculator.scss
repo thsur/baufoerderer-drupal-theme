@@ -1,0 +1,221 @@
+.component--calculator {
+
+    @include component-base;
+
+    background-color: $battleshipGrey;
+
+    padding-left: $grid-gutter-width;
+    padding-right: $grid-gutter-width;
+    padding-bottom: $grid-gutter-width;
+    padding-top: $grid-gutter-width;
+
+    color: $white;
+
+    .ribbon--wrapper {
+        
+        display: none;
+    }
+
+    & > div {
+
+        padding-bottom: ($grid-gutter-width * 0.5);
+    }
+
+    .title {
+
+        font-size: $font-size-px40;
+        margin-bottom: 0;
+    }
+
+    .subtitle {
+
+        font-size: $font-size-px20;
+        margin-bottom: 0;
+    }
+
+    @include media-breakpoint-up(lg) {
+
+        padding-left: ($grid-gutter-width * 1.5);
+        padding-right: ($grid-gutter-width * 1.5);
+
+        .ribbon--wrapper {
+            
+            display: block;            
+            margin-right: -($grid-gutter-width * 1.5);
+        }
+    }
+
+    @include media-breakpoint-down(sm) {
+
+        .title {
+
+           font-size: $font-size-px30;
+        }
+
+        .subtitle {
+
+            font-size: $font-size-px24;
+        }
+    }
+}
+
+calculator {
+
+    form {
+
+        @include media-breakpoint-up(lg) {
+
+            width: 70%;
+        }
+
+        label {
+
+            display: block;
+        }
+
+        input {
+
+            border: none;
+        }
+
+        .form-control {
+
+            display: block;
+            width: 100%;
+        }
+
+        .form-group {
+
+            padding-bottom: ($grid-gutter-width * 0.5);
+        }
+
+        .calculator--input {
+
+            button {
+
+                transform: translate(0,0);
+                background-color: $snotGreen;
+            }
+
+            .form-group:last-child div {
+
+                display: flex;
+                align-items: center;
+            }
+        }
+
+        .calculator--results {
+
+            // padding-top: ($grid-gutter-width * 0.2);
+
+            // Cf.:
+            // - https://learncssgrid.com/
+            // - https://css-tricks.com/snippets/css/complete-guide-grid/
+            // - https://gridbyexample.com/examples/
+            // - https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout
+            
+            .form-group {
+
+                display: grid;
+
+                grid-template-columns: 2rem auto;
+                grid-template-rows: auto auto;
+
+                grid-column-gap: 1rem;
+
+                label {
+
+                    grid-row: 1;
+                    grid-column: 2;
+
+                    @extend %hyphenate;
+
+                }
+
+                span {
+
+                    grid-row: 2;
+
+                    i {
+
+                        display: inline-block;
+                        vertical-align: middle;
+                    }
+                }
+
+                input {
+
+                    grid-row: 2;
+                }
+            }
+        }
+
+        .calculator--results {
+
+            .form-group {
+
+                &:last-of-type {
+
+                    label {
+
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+
+        @include media-breakpoint-down(sm) {
+
+            .calculator--input {
+
+                button {
+
+                    margin-top: map-get($spacers, 3);
+                    width: 100%;
+                }
+
+                .form-group:last-child div {
+
+                    display: block;
+                    
+                    input::placeholder {
+
+                        opacity: 0;
+                    }
+                }
+            }
+
+            .calculator--results {
+
+                .form-group {
+
+                    display: block;
+
+                    label:before {
+
+                        content: 'zzgl. ';
+                    }
+
+                    span {
+                        
+                        display: none;
+
+                    }
+
+                    &:last-of-type {
+
+                        label {
+
+                            font-weight: bold;
+                        }
+
+                        label:before {
+
+                            content: '';
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

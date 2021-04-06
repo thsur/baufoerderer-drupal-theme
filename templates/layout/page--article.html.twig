@@ -1,0 +1,10 @@
+{% extends "page.html.twig" %}
+
+{% block lead %}
+    
+  <div class="lead--subsidy-teaser">
+    {{ drupal_block('bfd_subsidy_search_teaser', { type: 'form', 'preselect': true }, wrapper = false) }}
+  </div>
+
+{% endblock %}
+      

@@ -1,0 +1,13 @@
+{# extends @vzbv_generic/layout/block.html.twig
+/**
+ * @file
+ * Theme override for tabs.
+ */
+#}
+{% block content %}
+  {% if content %}
+    <nav class="menu-local-tasks mt-5 mb-5" role="navigation" aria-label="{{ 'Tabs'|t }}">
+      {{ content }}
+    </nav>
+  {% endif %}
+{% endblock %}

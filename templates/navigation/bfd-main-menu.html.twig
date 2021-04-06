@@ -1,0 +1,109 @@
+{% spaceless %}
+  <button class="close-button mobile" aria-label="Navigation schließen"><i class="fas fa-times"></i></button>
+
+  <ul class="navbar-nav mr-auto" role="menubar" itemscope="" itemtype="http://www.schema.org/SiteNavigationElement">
+
+
+    {% for item in data %}
+
+      {#
+        Tabs with children
+      #}
+
+      {% if item.children %}
+
+        <li class="nav-item dropdown {{ item.class }} {{ item.is_active ? 'active' : '' }}">
+          
+          <a href="#" 
+             class="nav-link dropdown-toggle {{ item.is_active ? 'active' : '' }}"
+             id="dropdown-{{ item.tid }}" 
+             role="button" 
+             data-toggle="dropdown" 
+             aria-haspopup="true" aria-expanded="false" aria-label="{{ item.name }} (Hauptnavigationspunkt mit Unterpunkten)">
+            <span itemprop="name">{{ item.name }}</span>
+            {% if item.is_active %}
+              <span class="sr-only">(aktueller Seitenbereich)</span></a>
+            {% endif %}
+          </a>
+
+          <div class="dropdown-menu" aria-labelledby="dropdown-{{ item.tid }}">
+
+            <button class="close-button" aria-label="Navigation schließen"><i class="fas fa-times"></i></button>
+
+            <div class="dropdown-items">
+
+              {#
+                First-column main entry, if any
+              #}
+
+              {% if item.main %}
+                <ul class="dropdown-main">
+                  <li>
+                    <a href="{{ item.main.url }}" 
+                       itemprop="url"
+                       role="menuitem" class="dropdown-item {{ item.main.is_active ? 'active' : '' }}"
+                       aria-label="{{ item.main.name }}">
+                      <span itemprop="name">{{ item.main.name }}</span>
+                      {% if item.main.is_active %}
+                        <span class="sr-only">(aktuelle Seite)</span></a>
+                      {% endif %}
+                    </a>
+                  </li>
+                </ul>
+              {% endif %}
+              
+              {#
+                Multi-column children
+              #}
+              <ul>
+                {% for child in item.children %}
+                  {% if child.type == 'separator' %}
+                    <li class="divider">
+                      <div class="dropdown-divider"></div>
+                    </li>
+                  {% else %}
+                    <li>
+                      <a href="{{ child.url }}" 
+                         itemprop="url"
+                         role="menuitem" 
+                         aria-label="{{ child.name }}"
+                         id="nav-{{ child.tid }}" class="dropdown-item {{ child.is_active ? 'active' : '' }}">
+                        <span itemprop="name">{{ child.name }}</span>
+                        {% if child.is_active %}
+                          <span class="sr-only">(aktuelle Seite)</span></a>
+                        {% endif %}
+                      </a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+
+            </div>
+         </div>
+        
+        </li>
+
+      {% else %}
+        
+        {#
+          Tabs without children
+        #}
+
+        <li class="nav-item {{ item.is_active ? 'active' : '' }}">
+        
+          <a href="{{ item.url }}" role="menuitem" itemprop="url" 
+             aria-label="{{ item.name }} (Hauptnavigationspunkt ohne Unterpunkte)"
+             class="nav-link {{ item.is_active ? 'active' : '' }}">
+            <span itemprop="name">{{ item.name }}</span>
+            {% if item.is_active %}
+              <span class="sr-only">(aktuelle Seite)</span></a>
+            {% endif %}
+          </a>
+        
+        </li>
+        
+      {% endif %}
+    {% endfor %}
+
+  </ul>
+{% endspaceless %}

@@ -1,0 +1,21 @@
+{% import '@vzbv_generic/macros/fields.twig' as field %}
+ 
+{% for items in data %}
+  {% if items.items is not empty %}
+    <div class="component--accented component--{{ items.type }}">
+      {% if items.label %}
+        {{ field.label(null, {label: items.label})}}
+      {% endif %}
+      <div>
+        <ul>
+          {% for item in items.items %}
+            {%
+              set title = item.name ?? item.title
+            %}
+            <li><a href="{{ item.url }}" alt="{{ item.name }}" title="{{ item.name }}">{{ title }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  {% endif %}
+{% endfor %}

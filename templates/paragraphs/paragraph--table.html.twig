@@ -1,0 +1,17 @@
+
+{% extends 'paragraph.html.twig' %}
+{% import '@vzbv_generic/macros/fields.twig' as field %}
+
+{% block content %}
+    {% if content.field_headline %}
+        {{ field.headline(paragraph.field_headline, {label: paragraph.field_headline.value}) }}
+    {% endif %}
+    
+    {{ content | without('field_reference', 'field_headline') }}
+    
+    {% if content.field_reference %}
+        <div class="small">
+            {{ content.field_reference | bfd_theme('value') }}
+        </div> 
+    {% endif %}
+{% endblock %}
